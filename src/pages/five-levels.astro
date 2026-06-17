@@ -1,0 +1,338 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTABanner from '../components/CTABanner.astro';
+import MediaFigure from '../components/MediaFigure.astro';
+
+const levels = [
+  {
+    n: 1,
+    label: 'AI as Reference',
+    tagline: 'Ask. Get an answer. Apply it yourself.',
+    color: '#4a5568',
+    description: 'You ask the AI a question. It answers it. What\'s the I2C address range for peripherals on an Arduino Uno? What does this linker error mean? What\'s the difference between SPI mode 0 and mode 3?',
+    detail: 'This maps directly onto what most people already do with search engines, except the AI synthesises and explains rather than returning links. For a maker digging into an unfamiliar datasheet, this is genuinely useful. It\'s also the level with the lowest ceiling — you\'re getting knowledge, not code.',
+    example: { prompt: 'What\'s the difference between SPI mode 0 and mode 3?', output: 'A clear explanation of clock polarity (CPOL) and clock phase (CPHA), with a timing diagram...' },
+    courseMaps: false,
+  },
+  {
+    n: 2,
+    label: 'AI for Snippets',
+    tagline: 'You own the architecture. AI fills one piece.',
+    color: '#6366f1',
+    description: 'You own the code. The AI fills in one piece of it. You\'re writing firmware for a sensor interface and you need a function that converts a 12-bit ADC reading to a voltage given a 3.3V reference.',
+    detail: 'You\'re still the architect. You decided the program structure, the data types, where this function sits. The AI handled one implementation detail. The key discipline is that you\'re not asking for the whole program — you\'re asking for a piece you can evaluate on its own terms.',
+    example: { prompt: 'Write a Python function that converts a 12-bit ADC value to voltage given a 3.3V reference.', output: 'def adc_to_voltage(adc_val: int, vref: float = 3.3) -> float:\n    return (adc_val / 4095) * vref' },
+    courseMaps: false,
+  },
+  {
+    n: 3,
+    label: 'AI for Modules',
+    tagline: 'Describe the interface. AI implements the class.',
+    color: '#0891b2',
+    description: 'The AI isn\'t filling in a snippet. It\'s implementing a complete, self-contained piece of your design. You need a Python class that manages a serial connection to an Arduino: opens the port, sends JSON commands, reads responses, handles timeouts, raises a clean exception if the connection drops.',
+    detail: 'You designed the interface; the AI wrote the implementation. You still need to understand the result well enough to test it and integrate it. Domain knowledge pays off here: knowing the edge cases — dropped connections, malformed responses — is what makes the specification precise enough for the AI to get it right.',
+    example: { prompt: 'Create a Python class SerialBridge that opens a serial port at 9600 baud, sends dict commands as JSON lines, reads JSON responses, and raises ConnectionError on timeout.', output: 'class SerialBridge:\n    def __init__(self, port, baud=9600, timeout=2):\n        ...' },
+    courseMaps: true,
+  },
+  {
+    n: 4,
+    label: 'AI for Complete Files',
+    tagline: 'You specify. AI builds the whole thing.',
+    color: '#00c8ff',
+    description: 'You provide a specification. The AI returns a working file or sub-system. A concrete example: write a single-file Python script that reads sensor data from a serial port at 9600 baud, plots three channels live, and saves to CSV when the user closes the window.',
+    detail: 'You are the architect and the reviewer. You specify what the system does; the AI codes the whole thing. The quality of the output depends almost entirely on the quality of your specification. Underspecify and you get something that technically works but doesn\'t fit your requirements. This is where framing becomes the bottleneck.',
+    example: { prompt: 'Create a single-file Python script that reads comma-separated lines (timestamp, voltage, current) from serial at 9600 baud, plots all three on a live-updating chart, and saves to CSV on close. No external dependencies beyond pyserial and matplotlib.', output: '# A complete 120-line Python script ready to run' },
+    courseMaps: true,
+  },
+  {
+    n: 5,
+    label: 'AI as Agent',
+    tagline: 'Set a goal. AI reads, runs, fixes, reports.',
+    color: '#7c3aed',
+    description: 'The AI doesn\'t just generate code. It reads your files, runs commands, observes the output, and responds to what it finds. You set a goal; the AI executes the steps. You point Claude Code at a half-built serial plotter and say: "The graph freezes when the Arduino sends malformed data. Find the issue and fix it."',
+    detail: 'Claude Code reads the source files, identifies where the parser fails on unexpected input, writes a fix, runs the script to verify it, and reports what it changed. You didn\'t write any of that code. You reviewed the diff and decided whether to accept it. Level 5 is the most powerful mode — and the one that requires the most from you.',
+    example: { prompt: 'The graph freezes when the Arduino sends malformed data. Find the issue and fix it. Run the tests after to confirm nothing regressed.', output: '// Agent reads 4 files, identifies parser bug, writes fix, runs tests, returns diff' },
+    courseMaps: true,
+  },
+];
+
+const projectMap = [
+  { project: 'P1 — RC Filter Analyser', level: '3–4', desc: 'Built in Claude browser. No editor, no agent.' },
+  { project: 'P2 — CLI Tool', level: '4', desc: 'Multi-file Python, Cline or Claude Code in editor.' },
+  { project: 'P3 — Serial Plotter GUI', level: '4', desc: 'Multi-file with agent assist for debugging.' },
+  { project: 'P4 — Datasheet Q&A Tool', level: '4–5', desc: 'First agent-directed multi-step build.' },
+  { project: 'P5 — Resource Booking System', level: '5', desc: 'Full autonomous agent run across 10+ files.' },
+];
+---
+
+<BaseLayout
+  title="The Five Levels"
+  description="The Five Levels of AI-Assisted Coding — a framework for choosing the right level of AI involvement for any task, from lookup to autonomous agent."
+>
+
+  <!-- Hero -->
+  <section class="section fl-hero bg-grid">
+    <div class="container">
+      <p class="section-label">The Framework</p>
+      <h1>The Five Levels of<br><span style="color: var(--accent)">AI-Assisted Coding</span></h1>
+      <p class="hero-sub">
+        Not all AI use is equal. The Five Levels framework is a vocabulary for making
+        deliberate choices about how much of a task you hand to the AI — and how much
+        oversight you keep.
+      </p>
+      <div class="fl-intro-callout card">
+        <strong>Not a hierarchy of worth.</strong> Higher is not better.
+        If you need a one-line function, Level 2 is the right call.
+        The skill is choosing the right level for the task in front of you.
+      </div>
+      <div class="fl-hero-media">
+        <MediaFigure
+          caption="The Five Levels overview slide — the map that runs through every module and project"
+          subcaption="Module 1, L1.2 · The Five Levels of AI-Assisted Coding · Slide 2"
+          placeholderLabel="L1.2 — Five Levels overview slide"
+          aspect="16 / 7"
+        />
+      </div>
+    </div>
+  </section>
+
+  <!-- Level ladder overview -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="ladder">
+        {levels.map(l => (
+          <a href={`#level-${l.n}`} class="ladder-step" style={`--step-color: ${l.color}`}>
+            <span class="ladder-n mono">L{l.n}</span>
+            <span class="ladder-label">{l.label}</span>
+            <span class="ladder-tagline">{l.tagline}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Detailed levels -->
+  <section class="section">
+    <div class="container">
+      <div class="levels-detail">
+        {levels.map(l => (
+          <article class="level-card card" id={`level-${l.n}`} style={`--level-color: ${l.color}`}>
+            <div class="level-card-header">
+              <div class="level-card-num-wrap">
+                <div class="level-card-num-bg" aria-hidden="true"></div>
+                <span class="level-card-n mono">Level {l.n}</span>
+              </div>
+              <div class="level-card-titles">
+                <h2 class="level-card-title">{l.label}</h2>
+                <p class="level-card-tagline">{l.tagline}</p>
+                {l.courseMaps && <span class="tag tag-accent">Covered in this course</span>}
+              </div>
+            </div>
+            <div class="level-card-body">
+              <p class="level-desc">{l.description}</p>
+              <p class="level-detail">{l.detail}</p>
+              <div class="level-example">
+                <div class="example-row">
+                  <span class="example-label mono">Prompt →</span>
+                  <p class="example-text">{l.example.prompt}</p>
+                </div>
+                <div class="example-row output-row">
+                  <span class="example-label mono">Output ↓</span>
+                  <p class="example-text">{l.example.output}</p>
+                </div>
+              </div>
+              {l.n === 4 && (
+                <MediaFigure
+                  caption="The Level 4 spec example — what a complete, well-framed prompt looks like in practice"
+                  subcaption="Module 1, L1.3 · Framing a Problem for an AI · Strong prompt slide"
+                  placeholderLabel="L1.3 — Strong prompt example slide"
+                />
+              )}
+              {l.n === 5 && (
+                <MediaFigure
+                  caption="Level 5 in action — Claude Code reading files, running tests, and returning a diff"
+                  subcaption="Module 5, L5.4 · Building a Multi-file Project with an Agent"
+                  placeholderLabel="L5.4 — Agent session screenshot"
+                />
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Project mapping -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="accent-line"></div>
+      <p class="section-label">How the Course Maps</p>
+      <h2 class="section-title">Where you start, where you finish</h2>
+      <p class="section-sub">
+        Most makers enter at Level 1 or 2. By the end of this course
+        you'll work confidently at Levels 3–4, with hands-on Level 5 experience.
+        The projects build in a deliberate sequence.
+      </p>
+      <div class="project-map">
+        {projectMap.map(p => (
+          <div class="pm-row">
+            <span class="pm-project">{p.project}</span>
+            <div class="pm-level-badge">
+              <span class="tag tag-accent">Level {p.level}</span>
+            </div>
+            <span class="pm-desc">{p.desc}</span>
+          </div>
+        ))}
+      </div>
+      <p class="pm-note">
+        The progression is deliberate. Without the lower-level experience,
+        you can't evaluate what an agent produces. The projects give you that
+        foundation before asking you to use it at full power.
+      </p>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Ready to level up?"
+    sub="The Five Levels framework runs through the entire course. Start at Level 1 and work your way to confident Level 5 use by the capstone."
+  />
+
+</BaseLayout>
+
+<style>
+  .fl-hero { padding-bottom: 32px; }
+  .hero-sub { font-size: 1.1rem; max-width: 600px; margin: 16px 0 28px; }
+  .fl-hero-media { margin-top: 32px; max-width: 860px; }
+  .fl-intro-callout {
+    max-width: 600px;
+    border-color: var(--border-accent);
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .fl-intro-callout strong { color: var(--text); }
+
+  /* Ladder overview */
+  .ladder {
+    display: flex;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .ladder-step {
+    flex: 1;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-right: 1px solid var(--border);
+    text-decoration: none;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .ladder-step:last-child { border-right: none; }
+  .ladder-step:hover { background: var(--surface-2); text-decoration: none; }
+  .ladder-step::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--step-color, var(--accent));
+  }
+  .ladder-n { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; color: var(--step-color, var(--accent)); }
+  .ladder-label { font-weight: 700; font-size: 0.9rem; color: var(--text); }
+  .ladder-tagline { font-size: 0.75rem; color: var(--text-muted); line-height: 1.4; }
+
+  /* Level cards */
+  .levels-detail { display: flex; flex-direction: column; gap: 24px; }
+  .level-card {
+    border-left: 3px solid var(--level-color, var(--accent));
+    padding: 28px;
+  }
+  .level-card-header {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  .level-card-num-wrap { position: relative; flex-shrink: 0; }
+  .level-card-num-bg {
+    width: 60px; height: 60px;
+    border-radius: var(--radius-md);
+    background: var(--level-color, var(--accent));
+    opacity: 0.12;
+  }
+  .level-card-n {
+    position: absolute;
+    inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--level-color, var(--accent));
+  }
+  .level-card-titles { flex: 1; }
+  .level-card-title { font-size: 1.4rem; margin-bottom: 4px; }
+  .level-card-tagline { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 10px; }
+
+  .level-card-body { display: flex; flex-direction: column; gap: 14px; }
+  .level-desc { font-size: 0.95rem; }
+  .level-detail { font-size: 0.9rem; }
+
+  .level-example {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .example-row {
+    display: flex;
+    gap: 16px;
+    padding: 12px 16px;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--border);
+  }
+  .example-row:last-child { border-bottom: none; }
+  .output-row { background: var(--surface-3); }
+  .example-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent); flex-shrink: 0; padding-top: 2px; font-weight: 600; width: 72px; }
+  .example-text { font-size: 0.85rem; color: var(--text); font-family: var(--font-mono); white-space: pre-wrap; word-break: break-word; }
+
+  /* Project map */
+  .project-map {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .pm-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: background 0.1s;
+  }
+  .pm-row:last-child { border-bottom: none; }
+  .pm-row:hover { background: var(--surface-2); }
+  .pm-project { font-weight: 600; font-size: 0.9rem; color: var(--text); }
+  .pm-desc { font-size: 0.85rem; color: var(--text-muted); }
+  .pm-note { font-size: 0.875rem; color: var(--text-muted); font-style: italic; }
+
+  @media (max-width: 900px) {
+    .ladder { flex-wrap: wrap; }
+    .ladder-step { min-width: 45%; border-bottom: 1px solid var(--border); }
+  }
+  @media (max-width: 640px) {
+    .ladder-step { min-width: 100%; }
+    .level-card-header { flex-direction: column; }
+    .pm-row { grid-template-columns: 1fr; }
+    .pm-level-badge { justify-self: start; }
+  }
+</style>

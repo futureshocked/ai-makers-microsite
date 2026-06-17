@@ -1,0 +1,162 @@
+---
+/**
+ * VideoEmbed — responsive YouTube embed or styled placeholder.
+ *
+ * Props:
+ *   youtubeId   — YouTube video ID (e.g. "dQw4w9WgXcQ"). Omit to show placeholder.
+ *   title       — accessible title for the iframe / placeholder heading
+ *   caption     — main legend text shown below the video
+ *   subcaption  — secondary monospace label (e.g. "Course intro · ~3 min")
+ */
+interface Props {
+  youtubeId?: string;
+  title: string;
+  caption: string;
+  subcaption: string;
+}
+const { youtubeId, title, caption, subcaption } = Astro.props;
+---
+
+<figure class="media-figure video-figure">
+  <div class="video-wrapper">
+    {youtubeId ? (
+      <iframe
+        src={`https://www.youtube.com/embed/${youtubeId}?rel=0&modestbranding=1`}
+        title={title}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="lazy"
+      ></iframe>
+    ) : (
+      <div class="video-placeholder" role="img" aria-label={title}>
+        <div class="vp-bg"></div>
+        <div class="vp-content">
+          <div class="vp-play">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+              <circle cx="14" cy="14" r="13" stroke="#00c8ff" stroke-width="1.5" fill="rgba(0,200,255,0.08)"/>
+              <path d="M11.5 9.5l9 4.5-9 4.5V9.5z" fill="#00c8ff"/>
+            </svg>
+          </div>
+          <p class="vp-label">{title}</p>
+          <p class="vp-sub mono">Video coming soon</p>
+        </div>
+      </div>
+    )}
+  </div>
+
+  <figcaption class="media-caption">
+    <span class="mc-icon video-icon" aria-hidden="true">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+        <rect x="1" y="3" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/>
+        <path d="M10 6l4-2.5v8L10 9" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <div class="mc-text">
+      <span class="mc-caption">{caption}</span>
+      <span class="mc-sub mono">{subcaption}</span>
+    </div>
+  </figcaption>
+</figure>
+
+<style>
+  .media-figure {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  /* 16:9 wrapper */
+  .video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    background: var(--bg);
+  }
+  .video-wrapper iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* Placeholder */
+  .video-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .vp-bg {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(0, 200, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(rgba(0, 200, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 200, 255, 0.02) 1px, transparent 1px);
+    background-size: 24px 24px, 48px 48px, 48px 48px;
+    background-color: var(--bg);
+  }
+  .vp-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0,200,255,0.05) 0%, transparent 70%);
+  }
+  .vp-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+    padding: 24px;
+  }
+  .vp-play {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: rgba(0,200,255,0.08);
+    border: 1px solid rgba(0,200,255,0.25);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .vp-label { font-size: 0.9rem; font-weight: 600; color: var(--text); }
+  .vp-sub { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); }
+
+  /* Caption legend */
+  .media-caption {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 14px;
+    background: var(--surface-2);
+    border-top: 2px solid var(--accent);
+  }
+  .mc-icon {
+    flex-shrink: 0;
+    color: var(--accent);
+    margin-top: 1px;
+  }
+  .mc-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .mc-caption {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.3;
+  }
+  .mc-sub {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    letter-spacing: 0.04em;
+  }
+</style>

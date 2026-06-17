@@ -1,0 +1,79 @@
+---
+interface Props {
+  number: number;
+  title: string;
+  module: string;
+  level: string;
+  tags: string[];
+  description: string;
+  href?: string;
+}
+const { number, title, module, level, tags, description, href } = Astro.props;
+---
+
+<article class="project-card card">
+  <div class="project-header">
+    <span class="project-num mono">P{number.toString().padStart(2, '0')}</span>
+    <div class="project-badges">
+      <span class="tag tag-accent">{level}</span>
+    </div>
+  </div>
+  <h3 class="project-title">{title}</h3>
+  <p class="project-module mono">{module}</p>
+  <p class="project-desc">{description}</p>
+  <div class="project-tags">
+    {tags.map(t => <span class="tag tag-violet">{t}</span>)}
+  </div>
+  {href && (
+    <a href={href} class="project-link">
+      Learn more
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </a>
+  )}
+</article>
+
+<style>
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .project-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .project-num {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    opacity: 0.6;
+  }
+  .project-badges { display: flex; gap: 6px; }
+  .project-title { font-size: 1.1rem; }
+  .project-module {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: -4px;
+  }
+  .project-desc { font-size: 0.9rem; flex: 1; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-top: 4px;
+    text-decoration: none;
+    transition: gap 0.15s;
+  }
+  .project-link:hover { gap: 10px; text-decoration: none; }
+</style>

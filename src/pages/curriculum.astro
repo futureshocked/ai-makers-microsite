@@ -1,0 +1,343 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTABanner from '../components/CTABanner.astro';
+import MediaFigure from '../components/MediaFigure.astro';
+
+const modules = [
+  {
+    number: '00',
+    title: 'Setup and Orientation',
+    runtime: '~60 min',
+    volatility: 'Volatile',
+    summary: 'Get your tools installed and your mental model oriented. This module answers the "what is this, really?" questions before you build anything.',
+    lectures: [
+      { id: 'L0.1', title: 'Why I Built This Course: A Maker\'s Perspective', duration: '8 min' },
+      { id: 'L0.2', title: 'What You\'ll Build, What You\'ll Need, What You Won\'t Need', duration: '6 min' },
+      { id: 'L0.3', title: 'What AI Coding Assistants Can (and Can\'t) Do', duration: '10 min' },
+      { id: 'L0.4', title: 'AI Tools and LLM Landscape', duration: '12 min' },
+      { id: 'L0.4.1', title: 'Frontier Models and the Rest (bonus)', duration: '8 min' },
+      { id: 'L0.5', title: 'Install the Default Stack', duration: '15 min' },
+      { id: 'L0.6', title: 'From Maker Itch to Product', duration: '8 min' },
+    ],
+    project: null,
+  },
+  {
+    number: '01',
+    title: 'AI Coding Fundamentals',
+    runtime: '~1 hr',
+    volatility: 'Stable',
+    summary: 'The mental model you\'ll carry through the entire course: how AI-assisted coding actually works, a five-level framework for thinking about it, and the core skill of framing problems correctly.',
+    lectures: [
+      { id: 'L1.1', title: 'What AI-Assisted Coding Actually Is', duration: '8 min' },
+      { id: 'L1.2', title: 'The Five Levels of AI-Assisted Coding', duration: '10 min' },
+      { id: 'L1.3', title: 'The Core Skill: Framing a Problem for an AI', duration: '10 min' },
+      { id: 'L1.3.1', title: 'Use AI to Create a Prompt (bonus)', duration: '6 min' },
+      { id: 'L1.4', title: 'Known Failure Modes', duration: '10 min' },
+    ],
+    project: {
+      id: 'P1',
+      title: 'RC Filter Analyser',
+      description: 'A browser tool that plots RC circuit frequency response. Built in Claude with no editor, no install. Your first Level 3–4 build.',
+      tags: ['HTML', 'Canvas API', 'Level 3–4'],
+    },
+  },
+  {
+    number: '02',
+    title: 'AI Tools and Models',
+    runtime: '~1.5 hr',
+    volatility: 'Volatile',
+    summary: 'A tour of the current AI coding toolchain: editors, assistants, and models. This module is re-recorded annually because the tools change fast.',
+    lectures: [
+      { id: 'L2.1', title: 'The Editor: VS Code as the Default', duration: '10 min' },
+      { id: 'L2.2', title: 'Coding Assistants: Cline', duration: '15 min' },
+      { id: 'L2.3', title: 'Coding Assistants: Claude Code', duration: '15 min' },
+      { id: 'L2.4', title: 'LLMs as a Separate Concern', duration: '12 min' },
+      { id: 'L2.5', title: 'Choosing Data Sources', duration: '10 min' },
+      { id: 'L2.6', title: 'Local vs Cloud: The Real Trade-offs', duration: '12 min' },
+    ],
+    project: null,
+  },
+  {
+    number: '03',
+    title: 'The AI-Assisted Workflow',
+    runtime: '~2 hr',
+    volatility: 'Stable',
+    summary: 'The complete workflow from idea to deployed application: brainstorming, specification, implementation, testing, iteration, documentation, and deployment. Two projects in this module.',
+    lectures: [
+      { id: 'L3.1', title: 'Brainstorming and Idea Validation with AI', duration: '10 min' },
+      { id: 'L3.2', title: 'Planning and Specification', duration: '12 min' },
+      { id: 'L3.3', title: 'Implementation Patterns', duration: '12 min' },
+      { id: 'L3.4', title: 'Testing', duration: '10 min' },
+      { id: 'L3.5', title: 'Iteration and Refactoring', duration: '10 min' },
+      { id: 'L3.6', title: 'Documenting for Future-You', duration: '8 min' },
+      { id: 'L3.7', title: 'Deploying for Makers', duration: '10 min' },
+      { id: 'L3.8', title: 'AI for the Non-Code Business Layer', duration: '10 min' },
+    ],
+    project: {
+      id: 'P2–P3',
+      title: 'CLI Tool + Serial Plotter GUI',
+      description: 'Two projects: a CLI tool that processes maker file formats (BOM, traces, CSV), and a live serial data plotter with a web chart frontend.',
+      tags: ['Python', 'Flask', 'Chart.js', 'Level 4'],
+    },
+  },
+  {
+    number: '04',
+    title: 'AI in Your IDE',
+    runtime: '~1.5 hr',
+    volatility: 'Semi-stable',
+    summary: 'Putting an LLM inside your application. API basics, structured output, RAG for document intelligence, and the practical constraints around cost and latency.',
+    lectures: [
+      { id: 'L4.1', title: 'When to Put an LLM at Runtime, and When Not To', duration: '10 min' },
+      { id: 'L4.2', title: 'API Basics: Requests, Streaming, Structured Output', duration: '15 min' },
+      { id: 'L4.3', title: 'RAG: When It Earns Its Complexity', duration: '12 min' },
+      { id: 'L4.4', title: 'Preparing Documents for LLM Ingestion', duration: '10 min' },
+      { id: 'L4.5', title: 'Cost, Latency, and Graceful Failure', duration: '10 min' },
+    ],
+    project: {
+      id: 'P4',
+      title: 'Datasheet Q&A Tool',
+      description: 'Upload a component datasheet, ask natural-language questions, get cited answers. Your first AI-powered application using the RAG pattern.',
+      tags: ['Python', 'RAG', 'PDF', 'LLM API', 'Level 4–5'],
+    },
+  },
+  {
+    number: '05',
+    title: 'Ship a Real Project',
+    runtime: '~3–4 hr',
+    volatility: 'Stable',
+    summary: 'The capstone module. Build a complete multi-user web application with a full-stack agent: database, auth, background jobs, external API, and email notifications.',
+    lectures: [
+      { id: 'L5.1', title: 'Capstone Orientation: What We\'re Building', duration: '8 min' },
+      { id: 'L5.2', title: 'Multi-user Application Design', duration: '12 min' },
+      { id: 'L5.3', title: 'Database Design and the ORM', duration: '12 min' },
+      { id: 'L5.4', title: 'Building a Multi-file Project with an Agent', duration: '15 min' },
+      { id: 'L5.5', title: 'External APIs and Background Jobs', duration: '12 min' },
+      { id: 'L5.6', title: 'Finishing and Shipping the Capstone', duration: '15 min' },
+      { id: 'L5.7', title: 'Designing for Multiple Users (solopreneur)', duration: '10 min' },
+      { id: 'L5.8', title: 'The Solopreneur Roadmap (bonus)', duration: '10 min' },
+    ],
+    project: {
+      id: 'P5',
+      title: 'Resource Booking System (Capstone)',
+      description: 'A full makerspace equipment booking app: multi-user auth, PostgreSQL, role-based access, conflict detection, public holiday integration, and APScheduler email reminders.',
+      tags: ['Python', 'PostgreSQL', 'Flask', 'Auth', 'Level 5'],
+    },
+  },
+];
+---
+
+<BaseLayout
+  title="Curriculum"
+  description="Full module-by-module curriculum for AI Coding for Makers — 7 modules, 5 projects, from setup to a deployed multi-user application."
+>
+
+  <section class="section curriculum-hero bg-grid">
+    <div class="container curriculum-hero-inner">
+      <div class="curriculum-hero-text">
+        <p class="section-label">Full Curriculum</p>
+        <h1>What you'll learn</h1>
+        <p class="hero-sub">
+          Seven modules. Five projects. A complete arc from first prompt to
+          deployed application — built on a workflow you'll reuse for every
+          project after this one.
+        </p>
+        <div class="curriculum-stats">
+          <div class="cs-item"><span class="mono">6</span> Modules + Capstone</div>
+          <div class="cs-sep">·</div>
+          <div class="cs-item"><span class="mono">5</span> Hands-on Projects</div>
+          <div class="cs-sep">·</div>
+          <div class="cs-item"><span class="mono">~10 hr</span> of content</div>
+        </div>
+      </div>
+      <div class="curriculum-hero-media">
+        <MediaFigure
+          caption="Module 0 intro — setting expectations before you write a single prompt"
+          subcaption="Module 0, L0.1 · Why I Built This Course"
+          placeholderLabel="L0.1 — Why I Built This Course"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container">
+      <MediaFigure
+        caption="A typical lecture slide — concise, hardware-grounded, with real code examples throughout"
+        subcaption="Module 1, L1.3 · The Core Skill: Framing a Problem for an AI"
+        placeholderLabel="L1.3 — Framing a Problem"
+        aspect="21 / 9"
+      />
+    </div>
+  </section>
+
+  <section class="section-sm">
+    <div class="container">
+      <div class="modules-list">
+        {modules.map((mod, idx) => (
+          <details class="module-item" id={`module-${mod.number}`} open={idx <= 1}>
+            <summary class="module-summary">
+              <div class="module-header">
+                <div class="module-num-block">
+                  <span class="module-num mono">M{mod.number}</span>
+                </div>
+                <div class="module-meta">
+                  <div class="module-top">
+                    <h2 class="module-title">{mod.title}</h2>
+                    <div class="module-badges">
+                      <span class="tag tag-stable">{mod.runtime}</span>
+                      <span class={`tag ${mod.volatility === 'Stable' ? 'tag-stable' : mod.volatility === 'Semi-stable' ? 'tag-accent' : 'tag-volatile'}`}>
+                        {mod.volatility}
+                      </span>
+                    </div>
+                  </div>
+                  <p class="module-summary-text">{mod.summary}</p>
+                </div>
+                <div class="module-toggle" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </summary>
+            <div class="module-body">
+              <div class="lectures-list">
+                {mod.lectures.map((lec) => (
+                  <div class="lecture-row">
+                    <span class="lec-id mono">{lec.id}</span>
+                    <span class="lec-title">{lec.title}</span>
+                    <span class="lec-dur mono">{lec.duration}</span>
+                  </div>
+                ))}
+              </div>
+              {mod.project && (
+                <div class="module-project">
+                  <div class="project-badge-row">
+                    <span class="tag tag-accent">Project {mod.project.id}</span>
+                  </div>
+                  <h3 class="mp-title">{mod.project.title}</h3>
+                  <p class="mp-desc">{mod.project.description}</p>
+                  <div class="mp-tags">
+                    {mod.project.tags.map(t => <span class="tag tag-violet">{t}</span>)}
+                  </div>
+                </div>
+              )}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Start at Module 1, ship by Module 3."
+    sub="The course is designed so you build something real at the end of every module — not just at the end."
+  />
+
+</BaseLayout>
+
+<style>
+  .curriculum-hero { padding-bottom: 48px; }
+  .curriculum-hero-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .curriculum-hero-media { min-width: 0; }
+  .hero-sub { font-size: 1.1rem; margin: 16px 0 28px; }
+  .curriculum-stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+  .cs-item .mono { color: var(--accent); font-family: var(--font-mono); font-weight: 700; }
+  .cs-sep { color: var(--text-dim); }
+
+  /* Module items */
+  .modules-list { display: flex; flex-direction: column; gap: 12px; }
+  .module-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .module-item[open] { border-color: var(--border-accent); }
+  .module-item[open] .module-toggle { transform: rotate(180deg); }
+  .module-summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 24px;
+  }
+  .module-summary::-webkit-details-marker { display: none; }
+  .module-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .module-num-block {
+    flex-shrink: 0;
+    width: 56px; height: 56px;
+    background: var(--accent-dim);
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .module-num { font-family: var(--font-mono); font-size: 1rem; font-weight: 700; color: var(--accent); }
+  .module-meta { flex: 1; }
+  .module-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
+  .module-title { font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 0; }
+  .module-badges { display: flex; gap: 6px; flex-shrink: 0; }
+  .module-summary-text { font-size: 0.875rem; color: var(--text-muted); margin: 0; }
+  .module-toggle { flex-shrink: 0; color: var(--text-muted); transition: transform 0.2s; margin-top: 4px; }
+
+  /* Module body */
+  .module-body { padding: 0 24px 24px; }
+  .lectures-list {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .lecture-row {
+    display: grid;
+    grid-template-columns: 60px 1fr auto;
+    gap: 16px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    transition: background 0.1s;
+  }
+  .lecture-row:last-child { border-bottom: none; }
+  .lecture-row:hover { background: var(--surface-2); }
+  .lec-id { font-family: var(--font-mono); font-size: 0.72rem; color: var(--accent); font-weight: 600; }
+  .lec-title { font-size: 0.875rem; color: var(--text); }
+  .lec-dur { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim); white-space: nowrap; }
+
+  /* Module project */
+  .module-project {
+    background: var(--surface-2);
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-md);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .project-badge-row { display: flex; gap: 8px; }
+  .mp-title { font-size: 1rem; font-weight: 700; color: var(--text); }
+  .mp-desc { font-size: 0.875rem; color: var(--text-muted); }
+  .mp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  @media (max-width: 900px) {
+    .curriculum-hero-inner { grid-template-columns: 1fr; }
+    .curriculum-hero-media { display: none; }
+  }
+  @media (max-width: 640px) {
+    .lecture-row { grid-template-columns: 52px 1fr; }
+    .lec-dur { display: none; }
+    .module-num-block { width: 44px; height: 44px; }
+  }
+</style>

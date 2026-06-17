@@ -1,0 +1,321 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTABanner from '../components/CTABanner.astro';
+import MediaFigure from '../components/MediaFigure.astro';
+
+const steps = [
+  {
+    n: '01',
+    icon: 'brainstorm',
+    title: 'Brainstorm',
+    module: 'Module 3, L3.1',
+    youDo: 'Define the problem. Explore the solution space with AI as a thinking partner.',
+    aiDoes: 'Generates options, challenges assumptions, surfaces edge cases you hadn\'t considered.',
+    callout: null,
+  },
+  {
+    n: '02',
+    icon: 'plan',
+    title: 'Specify',
+    module: 'Module 3, L3.2',
+    youDo: 'Write a one-paragraph specification covering task, context, constraints, and output format. Run `git init` before you open the AI tool.',
+    aiDoes: 'Reviews and improves your specification. Identifies ambiguities before they become rework.',
+    callout: { text: 'The specification is the bottleneck.', sub: 'Every vague requirement becomes a correction cycle later. A good spec prevents that.' },
+  },
+  {
+    n: '03',
+    icon: 'implement',
+    title: 'Implement',
+    module: 'Module 3, L3.3',
+    youDo: 'Direct the AI at the right level (3, 4, or 5). Review each output before moving forward.',
+    aiDoes: 'Writes code from your specification — functions, files, or multi-file systems depending on the level.',
+    callout: null,
+  },
+  {
+    n: '04',
+    icon: 'test',
+    title: 'Test',
+    module: 'Module 3, L3.4',
+    youDo: 'Commit before each agent run. Run tests on the output. Validate against your original specification.',
+    aiDoes: 'Generates test cases, writes test code, and at Level 5 runs tests and reports results.',
+    callout: { text: 'Commit before every agent run.', sub: 'An agent that runs unchecked can make plausible-looking changes that break something you weren\'t watching.' },
+  },
+  {
+    n: '05',
+    icon: 'iterate',
+    title: 'Iterate',
+    module: 'Module 3, L3.5',
+    youDo: 'Identify what doesn\'t meet the specification. Reframe the problem, not just the symptom.',
+    aiDoes: 'Refactors code on request, diagnoses failures, suggests architectural improvements.',
+    callout: null,
+  },
+  {
+    n: '06',
+    icon: 'document',
+    title: 'Document',
+    module: 'Module 3, L3.6',
+    youDo: 'Write the README and decision log. Record why, not just what — future-you will be grateful.',
+    aiDoes: 'Generates docstrings, API docs, and README scaffolding from your codebase.',
+    callout: null,
+  },
+  {
+    n: '07',
+    icon: 'deploy',
+    title: 'Deploy',
+    module: 'Module 3, L3.7',
+    youDo: 'Choose the right deployment target for the audience. Makers deploy differently than enterprises.',
+    aiDoes: 'Writes deployment configs, Dockerfiles, systemd units, and step-by-step deployment guides.',
+    callout: null,
+  },
+  {
+    n: '08',
+    icon: 'operate',
+    title: 'Maintain',
+    module: 'Module 5, L5.6',
+    youDo: 'Monitor, update dependencies, and evolve the application as requirements change.',
+    aiDoes: 'Diagnoses bugs from logs, suggests dependency upgrades, writes migration scripts.',
+    callout: null,
+  },
+];
+
+const fourElements = [
+  { label: 'Task', desc: 'What should happen? Be specific about the output type.', example: '"Generate a Python function" not "help me with Python"', color: '#00c8ff' },
+  { label: 'Context', desc: 'What does the AI need to know to get it right? Your domain knowledge goes here.', example: 'The physics, the hardware, the formula, the expected behaviour', color: '#7c3aed' },
+  { label: 'Constraints', desc: 'What must not happen? Narrow the solution space explicitly.', example: '"No external libraries. Must work offline. Python 3.8+"', color: '#0891b2' },
+  { label: 'Output Format', desc: 'How should the result be structured? Be explicit about what you want back.', example: '"A single HTML file starting with <!DOCTYPE html>"', color: '#22c55e' },
+];
+---
+
+<BaseLayout
+  title="The Workflow"
+  description="The AI-Assisted Workflow — an 8-step process from brainstorm to deployed application, built around the four elements of a well-framed prompt."
+>
+
+  <!-- Hero -->
+  <section class="section wf-hero bg-grid">
+    <div class="container">
+      <p class="section-label">The Methodology</p>
+      <h1>The AI-Assisted<br><span style="color: var(--accent)">Workflow</span></h1>
+      <p class="hero-sub">
+        Eight steps. From the first conversation with AI to a deployed, documented
+        application. This workflow is the spine of Module 3 and every project that follows.
+      </p>
+    </div>
+  </section>
+
+  <!-- Workflow overview screenshot -->
+  <section class="section-sm">
+    <div class="container">
+      <MediaFigure
+        caption="The complete workflow at a glance — eight steps from brainstorm to deployed application"
+        subcaption="Module 3, L3.1–L3.8 · The AI-Assisted Workflow overview slide"
+        placeholderLabel="Module 3 — Workflow overview slide"
+        aspect="21 / 9"
+      />
+    </div>
+  </section>
+
+  <!-- 8-step flow -->
+  <section class="section">
+    <div class="container">
+      <div class="steps-grid">
+        {steps.map((step) => (
+          <div class="step-card card">
+            <div class="step-header">
+              <span class="step-n mono">{step.n}</span>
+              <div class="step-titles">
+                <h3 class="step-title">{step.title}</h3>
+                <span class="step-module mono">{step.module}</span>
+              </div>
+            </div>
+            <div class="step-body">
+              <div class="step-row">
+                <span class="step-actor you">You</span>
+                <p class="step-text">{step.youDo}</p>
+              </div>
+              <div class="step-row">
+                <span class="step-actor ai">AI</span>
+                <p class="step-text">{step.aiDoes}</p>
+              </div>
+              {step.callout && (
+                <div class="step-callout">
+                  <strong>{step.callout.text}</strong>
+                  <span>{step.callout.sub}</span>
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Four elements of a prompt -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="accent-line"></div>
+      <p class="section-label">The Core Skill</p>
+      <h2 class="section-title">Four elements of a well-framed prompt</h2>
+      <p class="section-sub">
+        Framing is disciplined communication: giving the AI the information it needs
+        to act correctly. Not all four elements are required for every prompt — but
+        for anything at Level 4, all four should be present.
+      </p>
+      <div class="grid-2 elements-grid">
+        {fourElements.map(el => (
+          <div class="element-card card" style={`--el-color: ${el.color}`}>
+            <div class="element-label" style={`color: ${el.color}`}>{el.label}</div>
+            <p class="element-desc">{el.desc}</p>
+            <div class="element-example">
+              <span class="mono" style="font-size: 0.78rem; color: var(--text);">{el.example}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Framing screenshot -->
+  <section class="section-sm">
+    <div class="container framing-media-wrap">
+      <MediaFigure
+        caption="The four-element framing layout — the visual students photograph and keep for every new project"
+        subcaption="Module 1, L1.3 · The Four Elements of a Well-Framed Prompt · Slide 3"
+        placeholderLabel="L1.3 — Four elements slide"
+      />
+    </div>
+  </section>
+
+  <!-- Spec habit callout -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="spec-habit card card-accent">
+        <div class="sh-icon" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path d="M8 6h16M8 10h12M8 14h10M8 22l4-4 4 2 6-6" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="sh-content">
+          <h3>The specification habit</h3>
+          <p>Before you open the AI tool for any task larger than a snippet, write a one-paragraph specification. It doesn't need to be formal. It needs to cover task, context, constraints, and output format. That paragraph is your prompt.</p>
+          <p class="sh-note">This is a habit, not a technique. The first few times it feels like extra work. After a few sessions it becomes automatic — and the quality and consistency of your outputs will reflect that.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Learn the workflow end-to-end."
+    sub="Module 3 walks through every step with real examples, and two complete projects to practice on."
+  />
+
+</BaseLayout>
+
+<style>
+  .wf-hero { padding-bottom: 32px; }
+  .hero-sub { font-size: 1.1rem; max-width: 600px; margin: 16px 0 0; }
+  .framing-media-wrap { max-width: 760px; }
+
+  /* Steps grid */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .step-card { padding: 24px; }
+  .step-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .step-n {
+    font-family: var(--font-mono);
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--accent);
+    opacity: 0.25;
+    line-height: 1;
+    min-width: 36px;
+  }
+  .step-titles { flex: 1; }
+  .step-title { font-size: 1.1rem; margin-bottom: 2px; }
+  .step-module { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .step-body { display: flex; flex-direction: column; gap: 12px; }
+  .step-row { display: flex; gap: 12px; align-items: flex-start; }
+  .step-actor {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .you { background: var(--accent-2-dim); color: #a78bfa; }
+  .ai { background: var(--accent-dim); color: var(--accent); }
+  .step-text { font-size: 0.875rem; color: var(--text-muted); }
+
+  .step-callout {
+    background: var(--surface-2);
+    border-left: 2px solid var(--accent);
+    padding: 10px 14px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .step-callout strong { color: var(--accent); }
+  .step-callout span { color: var(--text-muted); }
+
+  /* Four elements */
+  .elements-grid { gap: 20px; }
+  .element-card {
+    border-left: 3px solid var(--el-color, var(--accent));
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .element-label { font-size: 1.1rem; font-weight: 700; }
+  .element-desc { font-size: 0.875rem; }
+  .element-example {
+    background: var(--surface-2);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    font-style: italic;
+  }
+
+  /* Spec habit */
+  .spec-habit {
+    display: flex;
+    gap: 24px;
+    padding: 28px;
+    max-width: 800px;
+    align-items: flex-start;
+  }
+  .sh-icon {
+    flex-shrink: 0;
+    width: 56px; height: 56px;
+    background: var(--accent-dim);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .sh-content { flex: 1; }
+  .sh-content h3 { margin-bottom: 10px; }
+  .sh-content p { font-size: 0.9rem; margin-bottom: 10px; }
+  .sh-content p:last-child { margin-bottom: 0; }
+  .sh-note { font-style: italic; color: var(--text-dim); }
+
+  @media (max-width: 768px) {
+    .steps-grid { grid-template-columns: 1fr; }
+    .elements-grid { grid-template-columns: 1fr; }
+    .spec-habit { flex-direction: column; }
+    .sh-icon { display: none; }
+  }
+</style>

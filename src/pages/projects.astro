@@ -1,0 +1,311 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTABanner from '../components/CTABanner.astro';
+import MediaFigure from '../components/MediaFigure.astro';
+
+const projects = [
+  {
+    id: 'rc-filter',
+    number: '01',
+    title: 'RC Filter Analyser',
+    subtitle: 'Interactive browser tool with live Bode plot',
+    module: 'Module 1 — Project 1',
+    level: '3–4',
+    tags: ['HTML', 'JavaScript', 'Canvas API', 'No install'],
+    description: 'Build an interactive RC filter analyser entirely inside the Claude browser interface. No editor. No terminal. No install. You write a specification, hand it to Claude, and receive a complete, runnable HTML file.',
+    whatYouLearn: [
+      'Write a precise Level 4 specification covering task, context, constraints, and output format',
+      'Use the Canvas API for real-time Bode plot rendering (magnitude and phase)',
+      'Apply the four-element framing technique to a physics-based problem',
+      'Evaluate and iterate on AI output without leaving the browser',
+    ],
+    techDetail: 'The tool calculates the cutoff frequency fc = 1/(2πRC), renders a magnitude response in dB on a logarithmic frequency axis from 1 Hz to 1 MHz, and updates the plot in real time as the user adjusts R and C sliders. All in a single self-contained HTML file — no external dependencies.',
+    screenshot: {
+      caption: 'RC Filter Analyser running in the browser — Bode plot updates live as R and C sliders change',
+      subcaption: 'Module 1, A1.1 · Project 1 demo · Built entirely in Claude browser interface',
+      placeholderLabel: 'P1 — RC Filter Analyser demo',
+    },
+    color: '#00c8ff',
+  },
+  {
+    id: 'cli-tool',
+    number: '02',
+    title: 'CLI Tool with File Integration',
+    subtitle: 'Process maker file formats from the command line',
+    module: 'Module 3 — Project 2',
+    level: '4',
+    tags: ['Python', 'CLI', 'argparse', 'CSV / JSON'],
+    description: 'Build a command-line tool that reads and processes structured files from your hardware workflows — KiCad BOMs, component exports, measurement CSVs, or serial trace data. Cline or Claude Code does the heavy lifting from a detailed specification.',
+    whatYouLearn: [
+      'Structure a multi-file Python project with an agent coding assistant',
+      'Write specifications for file-processing logic: parsers, validators, formatters',
+      'Use argparse for a clean CLI interface',
+      'Handle real-world file format quirks (encoding, delimiter variation, missing fields)',
+    ],
+    techDetail: 'Project candidates include a BOM cost estimator (reads KiCad CSV, queries vendor pricing), a logic analyser trace decoder (reads .logicdata or CSV, formats for human inspection), and a power budget calculator (reads component specs, sums draw, flags risks). The exact project is confirmed at course launch.',
+    screenshot: {
+      caption: 'CLI tool output — processing a KiCad BOM CSV and producing a formatted cost and availability report',
+      subcaption: 'Module 3, A3.3 · Project 2 demo · Python CLI with argparse',
+      placeholderLabel: 'P2 — CLI Tool demo',
+    },
+    color: '#7c3aed',
+  },
+  {
+    id: 'serial-plotter',
+    number: '03',
+    title: 'Serial Data Plotter GUI',
+    subtitle: 'Live web dashboard for Arduino sensor data',
+    module: 'Module 3 — Project 3',
+    level: '4',
+    tags: ['Python', 'Flask', 'Chart.js', 'pyserial', 'WebSocket'],
+    description: 'Reads multiple sensor channels from an Arduino over serial, streams the data to a live web chart, and logs everything to CSV. A real multi-file project built with Cline or Claude Code acting as the primary implementation agent.',
+    whatYouLearn: [
+      'Direct an AI agent across a multi-file Python + web project',
+      'Use Flask-SocketIO or Server-Sent Events to push data from serial port to browser',
+      'Implement live Chart.js plots with configurable channel colours',
+      'Design the specification workflow for a project with hardware dependencies',
+    ],
+    techDetail: 'Serial data arrives as comma-separated lines: timestamp, and one or more sensor channels. Flask serves the web UI and streams updates via WebSocket. Chart.js renders all channels on a shared time axis. On close, accumulated data writes to a timestamped CSV. The Arduino sketch is provided.',
+    screenshot: {
+      caption: 'Serial Plotter GUI — three live channels from an Arduino plotted in the browser with CSV logging',
+      subcaption: 'Module 3, A3.5 · Project 3 demo · Python + Flask + Chart.js',
+      placeholderLabel: 'P3 — Serial Plotter GUI demo',
+    },
+    color: '#0891b2',
+  },
+  {
+    id: 'datasheet-qa',
+    number: '04',
+    title: 'Datasheet Q&A Tool',
+    subtitle: 'Natural-language questions over any PDF datasheet',
+    module: 'Module 4 — Project 4',
+    level: '4–5',
+    tags: ['Python', 'RAG', 'PDF parsing', 'LLM API', 'Vector search'],
+    description: 'Upload a component datasheet, ask natural-language questions, get answers with citations back to the source page. Your first application with an LLM at runtime — introducing retrieval-augmented generation (RAG) at the simplest useful level.',
+    whatYouLearn: [
+      'Call the Claude API from Python (or an equivalent) with cost and latency awareness',
+      'Parse and chunk a PDF for efficient LLM ingestion',
+      'Build a simple vector search index for retrieval',
+      'Design a RAG pipeline: chunk → embed → retrieve → generate → cite',
+    ],
+    techDetail: 'The application ingests any PDF (component datasheets, application notes, standards excerpts), chunks it by page or paragraph, embeds the chunks, and retrieves the top-k most relevant chunks for each query. The LLM generates an answer grounded in the retrieved text and cites the source pages. Runs locally — no cloud vector database required.',
+    screenshot: {
+      caption: 'Datasheet Q&A in action — asking a natural-language question, getting a cited answer from a PDF datasheet',
+      subcaption: 'Module 4, A4.1 · Project 4 demo · Python + RAG + LLM API',
+      placeholderLabel: 'P4 — Datasheet Q&A demo',
+    },
+    color: '#f59e0b',
+  },
+  {
+    id: 'booking-system',
+    number: '05',
+    title: 'Resource Booking System',
+    subtitle: 'Full-stack makerspace equipment booking application',
+    module: 'Module 5 — Capstone Project',
+    level: '5',
+    tags: ['Python', 'Flask', 'PostgreSQL', 'SQLAlchemy', 'APScheduler', 'Auth'],
+    description: 'The capstone: a production-grade multi-user web application for booking makerspace equipment. Built with Claude Code running as an autonomous agent across ten-plus files, with you steering the architecture and reviewing every diff.',
+    whatYouLearn: [
+      'Direct a Level 5 agent across a complex, multi-file project',
+      'Design a PostgreSQL schema with ORM mapping (SQLAlchemy)',
+      'Implement role-based access control (admin, member, guest)',
+      'Integrate an external API (Nager.Date for public holidays)',
+      'Build background jobs with APScheduler for reminder emails',
+      'Practice the review-and-steer discipline that makes Level 5 safe to use',
+    ],
+    techDetail: 'The application manages equipment (laser cutters, CNC machines, 3D printers), booking time slots, users and roles, booking conflict detection, public holiday blocking via Nager.Date, and APScheduler email reminders 24 hours before each booking. Built with Flask, PostgreSQL, SQLAlchemy, and Flask-Login. Deployed locally in development; deployment guides for VPS hosting are included.',
+    screenshot: {
+      caption: 'Resource Booking System — the capstone running locally, showing the booking calendar and conflict detection',
+      subcaption: 'Module 5, A5.6 · Capstone demo · Python + Flask + PostgreSQL',
+      placeholderLabel: 'P5 — Booking System demo',
+    },
+    color: '#22c55e',
+  },
+];
+---
+
+<BaseLayout
+  title="Projects"
+  description="Five hands-on projects across the course — from a browser-only RC filter tool to a full-stack PostgreSQL booking application."
+>
+
+  <!-- Hero -->
+  <section class="section projects-hero bg-grid">
+    <div class="container">
+      <p class="section-label">Hands-on Projects</p>
+      <h1>Five projects.<br><span style="color: var(--accent)">Increasing complexity.</span></h1>
+      <p class="hero-sub">
+        Every module ends with something you build and keep. The projects form a
+        deliberate arc: from a single HTML file in a browser to a deployed multi-user
+        application — mirroring the progression through the Five Levels.
+      </p>
+      <div class="project-arc">
+        {projects.map((p, i) => (
+          <a href={`#${p.id}`} class="arc-item" style={`--arc-color: ${p.color}`}>
+            <span class="arc-n mono">P{p.number}</span>
+            <span class="arc-title">{p.title}</span>
+            <span class="arc-level">Level {p.level}</span>
+            {i < projects.length - 1 && <span class="arc-arrow" aria-hidden="true">→</span>}
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Project detail cards -->
+  <section class="section">
+    <div class="container">
+      <div class="projects-detail">
+        {projects.map(p => (
+          <article class="project-detail" id={p.id} style={`--pd-color: ${p.color}`}>
+            <div class="pd-header">
+              <div class="pd-num-block">
+                <span class="pd-num mono">P{p.number}</span>
+              </div>
+              <div class="pd-titles">
+                <div class="pd-meta-row">
+                  <span class="pd-module mono">{p.module}</span>
+                  <span class="tag tag-accent">Level {p.level}</span>
+                </div>
+                <h2 class="pd-title">{p.title}</h2>
+                <p class="pd-subtitle">{p.subtitle}</p>
+                <div class="pd-tags">
+                  {p.tags.map(t => <span class="tag tag-violet">{t}</span>)}
+                </div>
+              </div>
+            </div>
+
+            <div class="pd-body">
+              <div class="pd-col-main">
+                <p class="pd-description">{p.description}</p>
+
+                <div class="pd-section">
+                  <h4 class="pd-section-title">What you'll learn</h4>
+                  <ul class="pd-learn-list">
+                    {p.whatYouLearn.map(item => (
+                      <li class="pd-learn-item">
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                          <path d="M2 7l3.5 3.5L12 3" stroke={p.color} stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div class="pd-col-tech">
+                <MediaFigure
+                  caption={p.screenshot.caption}
+                  subcaption={p.screenshot.subcaption}
+                  placeholderLabel={p.screenshot.placeholderLabel}
+                />
+                <div class="pd-tech-detail">
+                  <h4 class="pd-section-title">Technical detail</h4>
+                  <p class="pd-tech-text">{p.techDetail}</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Build all five. Keep all five."
+    sub="Each project is yours to extend, modify, and ship. They're designed to be real tools — not tutorial throwaways."
+  />
+
+</BaseLayout>
+
+<style>
+  .projects-hero { padding-bottom: 48px; }
+  .hero-sub { font-size: 1.1rem; max-width: 600px; margin: 16px 0 32px; }
+
+  /* Arc overview */
+  .project-arc {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 4px;
+    width: fit-content;
+  }
+  .arc-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 12px 16px;
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .arc-item:hover { background: var(--surface-2); text-decoration: none; }
+  .arc-n { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; color: var(--arc-color, var(--accent)); }
+  .arc-title { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+  .arc-level { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); }
+  .arc-arrow { color: var(--text-dim); font-size: 0.8rem; align-self: center; margin: 0 4px; }
+
+  /* Project detail */
+  .projects-detail { display: flex; flex-direction: column; gap: 32px; }
+  .project-detail {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    border-top: 3px solid var(--pd-color, var(--accent));
+  }
+  .pd-header {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 28px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+  }
+  .pd-num-block {
+    flex-shrink: 0;
+    width: 64px; height: 64px;
+    background: color-mix(in srgb, var(--pd-color, #00c8ff) 15%, transparent);
+    border: 1px solid color-mix(in srgb, var(--pd-color, #00c8ff) 30%, transparent);
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .pd-num { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 800; color: var(--pd-color, var(--accent)); }
+  .pd-titles { flex: 1; }
+  .pd-meta-row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .pd-module { font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; }
+  .pd-title { font-size: 1.5rem; margin-bottom: 4px; }
+  .pd-subtitle { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 12px; }
+  .pd-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .pd-body {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 0;
+  }
+  .pd-col-main { padding: 28px; border-right: 1px solid var(--border); }
+  .pd-col-tech { padding: 28px; display: flex; flex-direction: column; gap: 20px; }
+  .pd-description { font-size: 0.95rem; margin-bottom: 24px; }
+  .pd-section-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); font-family: var(--font-mono); margin-bottom: 12px; }
+  .pd-learn-list { display: flex; flex-direction: column; gap: 10px; }
+  .pd-learn-item { display: flex; gap: 10px; align-items: flex-start; font-size: 0.875rem; color: var(--text-muted); }
+  .pd-learn-item svg { flex-shrink: 0; margin-top: 2px; }
+
+  .pd-tech-detail { background: var(--surface-2); border-radius: var(--radius-md); padding: 16px; border: 1px solid var(--border); }
+  .pd-tech-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
+
+  @media (max-width: 900px) {
+    .pd-body { grid-template-columns: 1fr; }
+    .pd-col-main { border-right: none; border-bottom: 1px solid var(--border); }
+    .project-arc { flex-direction: column; width: 100%; }
+    .arc-arrow { display: none; }
+  }
+  @media (max-width: 640px) {
+    .pd-header { flex-direction: column; }
+  }
+</style>
