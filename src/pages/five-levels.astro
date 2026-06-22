@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTABanner from '../components/CTABanner.astro';
 import MediaFigure from '../components/MediaFigure.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
 
 const levels = [
   {
@@ -58,10 +59,9 @@ const levels = [
 
 const projectMap = [
   { project: 'P1 — RC Filter Analyser', level: '3–4', desc: 'Built in Claude browser. No editor, no agent.' },
-  { project: 'P2 — CLI Tool', level: '4', desc: 'Multi-file Python, Cline or Claude Code in editor.' },
-  { project: 'P3 — Serial Plotter GUI', level: '4', desc: 'Multi-file with agent assist for debugging.' },
-  { project: 'P4 — Datasheet Q&A Tool', level: '4–5', desc: 'First agent-directed multi-step build.' },
-  { project: 'P5 — Resource Booking System', level: '5', desc: 'Full autonomous agent run across 10+ files.' },
+  { project: 'P2 — Arduino Serial Plotter', level: '4', desc: 'Multi-file Python + web, Cline or Claude Code.' },
+  { project: 'P3 — Datasheet Q&A Tool', level: '4–5', desc: 'First agent-directed multi-step build.' },
+  { project: 'P4 — Makerspace Booking System', level: '5', desc: 'Full autonomous agent run across 10+ files.' },
 ];
 ---
 
@@ -80,17 +80,13 @@ const projectMap = [
         deliberate choices about how much of a task you hand to the AI — and how much
         oversight you keep.
       </p>
-      <div class="fl-intro-callout card">
-        <strong>Not a hierarchy of worth.</strong> Higher is not better.
-        If you need a one-line function, Level 2 is the right call.
-        The skill is choosing the right level for the task in front of you.
-      </div>
       <div class="fl-hero-media">
-        <MediaFigure
+        <VideoEmbed
+          youtubeId="5ZqU3p0RFEc"
+          title="The Five Levels of AI-Assisted Coding"
           caption="The Five Levels overview slide — the map that runs through every module and project"
           subcaption="Module 1, L1.2 · The Five Levels of AI-Assisted Coding · Slide 2"
-          placeholderLabel="L1.2 — Five Levels overview slide"
-          aspect="16 / 7"
+          desc="This lecture introduces the Five Levels framework — a vocabulary for choosing the right level of AI involvement for any task. From a quick lookup (Level 1) to a fully autonomous agent run (Level 5), each level carries different trade-offs in speed, control, and risk. The core skill is not reaching for the highest level — it is matching the level to the task."
         />
       </div>
     </div>
@@ -142,17 +138,21 @@ const projectMap = [
                 </div>
               </div>
               {l.n === 4 && (
-                <MediaFigure
-                  caption="The Level 4 spec example — what a complete, well-framed prompt looks like in practice"
-                  subcaption="Module 1, L1.3 · Framing a Problem for an AI · Strong prompt slide"
-                  placeholderLabel="L1.3 — Strong prompt example slide"
+                <VideoEmbed
+                    youtubeId="PkRF8o2R7fU"
+                    title="Module 1, L1.3 — The Core Skill: Framing a Problem for an AI"
+                    caption="Module 1 Lecture 3 — The Core Skill: Framing a Problem for an AI"
+                    subcaption="Module 1, L1.3 · The Core Skill: Framing a Problem for an AI"
+                    desc="Framing is the core skill of AI-assisted coding. This lecture introduces the four-element structure — task, context, constraints, and output format — that turns a vague request into a specification the AI can act on. A well-framed prompt reduces correction cycles; a poorly framed one produces plausible-looking output built on wrong assumptions."
                 />
               )}
               {l.n === 5 && (
-                <MediaFigure
+                <VideoEmbed
+                  youtubeId="Zwccg8AWiM8"
+                  title="Level 5 in action — Claude Code reading files, running tests, and returning a diff"
                   caption="Level 5 in action — Claude Code reading files, running tests, and returning a diff"
                   subcaption="Module 5, L5.4 · Building a Multi-file Project with an Agent"
-                  placeholderLabel="L5.4 — Agent session screenshot"
+                  desc="This lecture shows Level 5 working across a real multi-file project. Claude Code reads the codebase, runs the test suite, interprets the failures, and returns a diff — without being told which files to touch. The lecture covers how to set the goal, how to review what the agent did, and when to stop it before it goes too far."
                 />
               )}
             </div>
@@ -202,15 +202,7 @@ const projectMap = [
 <style>
   .fl-hero { padding-bottom: 32px; }
   .hero-sub { font-size: 1.1rem; max-width: 600px; margin: 16px 0 28px; }
-  .fl-hero-media { margin-top: 32px; max-width: 860px; }
-  .fl-intro-callout {
-    max-width: 600px;
-    border-color: var(--border-accent);
-    font-size: 0.95rem;
-    color: var(--text-muted);
-    line-height: 1.6;
-  }
-  .fl-intro-callout strong { color: var(--text); }
+  .fl-hero-media { margin-top: 32px; }
 
   /* Ladder overview */
   .ladder {

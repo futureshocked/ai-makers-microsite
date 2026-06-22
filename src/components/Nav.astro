@@ -12,15 +12,12 @@ const currentPath = Astro.url.pathname;
 <nav class="nav">
   <div class="container nav-inner">
     <a href="/" class="nav-logo" aria-label="AI Coding for Makers — Home">
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect x="2" y="2" width="24" height="24" rx="4" stroke="#00c8ff" stroke-width="1.5" fill="none"/>
-        <path d="M8 14h4m4 0h4M14 8v4m0 4v4" stroke="#00c8ff" stroke-width="1.5" stroke-linecap="round"/>
-        <circle cx="14" cy="14" r="2" fill="#00c8ff"/>
-        <circle cx="8" cy="8" r="1.5" fill="#00c8ff" opacity="0.4"/>
-        <circle cx="20" cy="8" r="1.5" fill="#00c8ff" opacity="0.4"/>
-        <circle cx="8" cy="20" r="1.5" fill="#00c8ff" opacity="0.4"/>
-        <circle cx="20" cy="20" r="1.5" fill="#00c8ff" opacity="0.4"/>
-      </svg>
+      <img
+        src="https://imagedelivery.net/EzErua5FfjxwIvZXiki_dA/f968142d-aa89-4739-7fb7-9ff0680b6200/400pxwide"
+        alt="AI Coding for Makers"
+        class="nav-logo-img"
+        aria-hidden="true"
+      />
       <span class="nav-brand">
         <span class="nav-brand-main">AI Coding</span>
         <span class="nav-brand-sub">for Makers</span>
@@ -40,7 +37,7 @@ const currentPath = Astro.url.pathname;
           {link.label}
         </a>
       ))}
-      <a href="https://connect.techexplorations.com" target="_blank" rel="noopener" class="btn btn-primary btn-sm nav-cta">
+      <a href="https://connect.techexplorations.com/so/ai-coding" target="_blank" rel="noopener" class="btn btn-primary btn-sm nav-cta">
         Enroll Now
       </a>
     </div>
@@ -70,6 +67,11 @@ const currentPath = Astro.url.pathname;
     gap: 10px;
     text-decoration: none;
     flex-shrink: 0;
+  }
+  .nav-logo-img {
+    height: 36px;
+    width: auto;
+    display: block;
   }
   .nav-brand { display: flex; flex-direction: column; line-height: 1.1; }
   .nav-brand-main { font-size: 0.95rem; font-weight: 700; color: var(--text); }

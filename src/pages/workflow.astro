@@ -2,6 +2,8 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTABanner from '../components/CTABanner.astro';
 import MediaFigure from '../components/MediaFigure.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
+
 
 const steps = [
   {
@@ -107,10 +109,13 @@ const fourElements = [
   <section class="section-sm">
     <div class="container">
       <MediaFigure
+        src="https://imagedelivery.net/EzErua5FfjxwIvZXiki_dA/cdfb5dc5-8618-4f07-9507-3ab4cda79900/1024pxwide"
+        alt="The complete workflow at a glance — eight steps from brainstorm to deployed application"
         caption="The complete workflow at a glance — eight steps from brainstorm to deployed application"
         subcaption="Module 3, L3.1–L3.8 · The AI-Assisted Workflow overview slide"
         placeholderLabel="Module 3 — Workflow overview slide"
         aspect="21 / 9"
+        desc="A single slide showing all eight steps of the AI-assisted workflow — from Brainstorm and Specify through Implement, Test, and Iterate, to Document, Deploy, and Maintain. This overview runs as the reference map throughout Module 3, appearing at the start of each lecture to orient you within the full arc."
       />
     </div>
   </section>
@@ -178,10 +183,12 @@ const fourElements = [
   <!-- Framing screenshot -->
   <section class="section-sm">
     <div class="container framing-media-wrap">
-      <MediaFigure
-        caption="The four-element framing layout — the visual students photograph and keep for every new project"
-        subcaption="Module 1, L1.3 · The Four Elements of a Well-Framed Prompt · Slide 3"
-        placeholderLabel="L1.3 — Four elements slide"
+      <VideoEmbed
+        youtubeId="PkRF8o2R7fU"
+        title="Module 1, L1.3 — The Core Skill: Framing a Problem for an AI"
+        caption="Module 1 Lecture 3 — The Core Skill: Framing a Problem for an AI"
+        subcaption="Module 1, L1.3 · The Core Skill: Framing a Problem for an AI"
+        desc="Framing is the core skill of AI-assisted coding. This lecture introduces the four-element structure — task, context, constraints, and output format — that turns a vague request into a specification the AI can act on. A well-framed prompt reduces correction cycles; a poorly framed one produces plausible-looking output built on wrong assumptions."
       />
     </div>
   </section>
@@ -214,7 +221,6 @@ const fourElements = [
 <style>
   .wf-hero { padding-bottom: 32px; }
   .hero-sub { font-size: 1.1rem; max-width: 600px; margin: 16px 0 0; }
-  .framing-media-wrap { max-width: 760px; }
 
   /* Steps grid */
   .steps-grid {
@@ -296,7 +302,6 @@ const fourElements = [
     display: flex;
     gap: 24px;
     padding: 28px;
-    max-width: 800px;
     align-items: flex-start;
   }
   .sh-icon {

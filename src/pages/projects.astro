@@ -21,6 +21,8 @@ const projects = [
     ],
     techDetail: 'The tool calculates the cutoff frequency fc = 1/(2πRC), renders a magnitude response in dB on a logarithmic frequency axis from 1 Hz to 1 MHz, and updates the plot in real time as the user adjusts R and C sliders. All in a single self-contained HTML file — no external dependencies.',
     screenshot: {
+      src: "https://imagedelivery.net/EzErua5FfjxwIvZXiki_dA/e893eb2b-2a8c-4c76-73cc-eea36fd36b00/800pxwide",
+      alt: 'RC Filter Analyser running in the browser — Bode plot updates live as R and C sliders change',
       caption: 'RC Filter Analyser running in the browser — Bode plot updates live as R and C sliders change',
       subcaption: 'Module 1, A1.1 · Project 1 demo · Built entirely in Claude browser interface',
       placeholderLabel: 'P1 — RC Filter Analyser demo',
@@ -28,34 +30,11 @@ const projects = [
     color: '#00c8ff',
   },
   {
-    id: 'cli-tool',
-    number: '02',
-    title: 'CLI Tool with File Integration',
-    subtitle: 'Process maker file formats from the command line',
-    module: 'Module 3 — Project 2',
-    level: '4',
-    tags: ['Python', 'CLI', 'argparse', 'CSV / JSON'],
-    description: 'Build a command-line tool that reads and processes structured files from your hardware workflows — KiCad BOMs, component exports, measurement CSVs, or serial trace data. Cline or Claude Code does the heavy lifting from a detailed specification.',
-    whatYouLearn: [
-      'Structure a multi-file Python project with an agent coding assistant',
-      'Write specifications for file-processing logic: parsers, validators, formatters',
-      'Use argparse for a clean CLI interface',
-      'Handle real-world file format quirks (encoding, delimiter variation, missing fields)',
-    ],
-    techDetail: 'Project candidates include a BOM cost estimator (reads KiCad CSV, queries vendor pricing), a logic analyser trace decoder (reads .logicdata or CSV, formats for human inspection), and a power budget calculator (reads component specs, sums draw, flags risks). The exact project is confirmed at course launch.',
-    screenshot: {
-      caption: 'CLI tool output — processing a KiCad BOM CSV and producing a formatted cost and availability report',
-      subcaption: 'Module 3, A3.3 · Project 2 demo · Python CLI with argparse',
-      placeholderLabel: 'P2 — CLI Tool demo',
-    },
-    color: '#7c3aed',
-  },
-  {
     id: 'serial-plotter',
-    number: '03',
-    title: 'Serial Data Plotter GUI',
+    number: '02',
+    title: 'Arduino Serial Plotter',
     subtitle: 'Live web dashboard for Arduino sensor data',
-    module: 'Module 3 — Project 3',
+    module: 'Module 3 — Project 2',
     level: '4',
     tags: ['Python', 'Flask', 'Chart.js', 'pyserial', 'WebSocket'],
     description: 'Reads multiple sensor channels from an Arduino over serial, streams the data to a live web chart, and logs everything to CSV. A real multi-file project built with Cline or Claude Code acting as the primary implementation agent.',
@@ -67,18 +46,20 @@ const projects = [
     ],
     techDetail: 'Serial data arrives as comma-separated lines: timestamp, and one or more sensor channels. Flask serves the web UI and streams updates via WebSocket. Chart.js renders all channels on a shared time axis. On close, accumulated data writes to a timestamped CSV. The Arduino sketch is provided.',
     screenshot: {
+      src: "https://imagedelivery.net/EzErua5FfjxwIvZXiki_dA/78b0725c-d148-4bac-a021-8e4bd4853200/1920",
+      alt: 'Serial Plotter GUI running in the browser — three live channels from an Arduino plotted with Chart.js',
       caption: 'Serial Plotter GUI — three live channels from an Arduino plotted in the browser with CSV logging',
-      subcaption: 'Module 3, A3.5 · Project 3 demo · Python + Flask + Chart.js',
-      placeholderLabel: 'P3 — Serial Plotter GUI demo',
+      subcaption: 'Module 3, A3.5 · Project 2 demo · Python + Flask + Chart.js',
+      placeholderLabel: 'P2 — Arduino Serial Plotter demo',
     },
     color: '#0891b2',
   },
   {
     id: 'datasheet-qa',
-    number: '04',
+    number: '03',
     title: 'Datasheet Q&A Tool',
     subtitle: 'Natural-language questions over any PDF datasheet',
-    module: 'Module 4 — Project 4',
+    module: 'Module 4 — Project 3',
     level: '4–5',
     tags: ['Python', 'RAG', 'PDF parsing', 'LLM API', 'Vector search'],
     description: 'Upload a component datasheet, ask natural-language questions, get answers with citations back to the source page. Your first application with an LLM at runtime — introducing retrieval-augmented generation (RAG) at the simplest useful level.',
@@ -90,16 +71,18 @@ const projects = [
     ],
     techDetail: 'The application ingests any PDF (component datasheets, application notes, standards excerpts), chunks it by page or paragraph, embeds the chunks, and retrieves the top-k most relevant chunks for each query. The LLM generates an answer grounded in the retrieved text and cites the source pages. Runs locally — no cloud vector database required.',
     screenshot: {
+      src: "https://imagedelivery.net/EzErua5FfjxwIvZXiki_dA/3cb06b90-8236-44f9-8066-0561dc6ec100/1024pxwide",
+      alt: 'Datasheet Q&A in action — asking a natural-language question, getting a cited answer from a PDF datasheet',
       caption: 'Datasheet Q&A in action — asking a natural-language question, getting a cited answer from a PDF datasheet',
-      subcaption: 'Module 4, A4.1 · Project 4 demo · Python + RAG + LLM API',
-      placeholderLabel: 'P4 — Datasheet Q&A demo',
+      subcaption: 'Module 4, A4.1 · Project 3 demo · Python + RAG + LLM API',
+      placeholderLabel: 'P3 — Datasheet Q&A demo',
     },
     color: '#f59e0b',
   },
   {
     id: 'booking-system',
-    number: '05',
-    title: 'Resource Booking System',
+    number: '04',
+    title: 'Makerspace Booking System',
     subtitle: 'Full-stack makerspace equipment booking application',
     module: 'Module 5 — Capstone Project',
     level: '5',
@@ -115,9 +98,11 @@ const projects = [
     ],
     techDetail: 'The application manages equipment (laser cutters, CNC machines, 3D printers), booking time slots, users and roles, booking conflict detection, public holiday blocking via Nager.Date, and APScheduler email reminders 24 hours before each booking. Built with Flask, PostgreSQL, SQLAlchemy, and Flask-Login. Deployed locally in development; deployment guides for VPS hosting are included.',
     screenshot: {
+      src: "https://imagedelivery.net/EzErua5FfjxwIvZXiki_dA/c018de5f-7d86-483b-a32a-48485dd9d000/1024pxwide",
+      alt: 'Makerspace Booking System — the capstone running locally, showing the booking calendar and conflict detection',
       caption: 'Resource Booking System — the capstone running locally, showing the booking calendar and conflict detection',
       subcaption: 'Module 5, A5.6 · Capstone demo · Python + Flask + PostgreSQL',
-      placeholderLabel: 'P5 — Booking System demo',
+      placeholderLabel: 'P4 — Makerspace Booking System demo',
     },
     color: '#22c55e',
   },
@@ -126,26 +111,26 @@ const projects = [
 
 <BaseLayout
   title="Projects"
-  description="Five hands-on projects across the course — from a browser-only RC filter tool to a full-stack PostgreSQL booking application."
+  description="Four hands-on projects across the course — from a browser-only RC filter tool to a full-stack PostgreSQL booking application."
 >
 
   <!-- Hero -->
   <section class="section projects-hero bg-grid">
     <div class="container">
       <p class="section-label">Hands-on Projects</p>
-      <h1>Five projects.<br><span style="color: var(--accent)">Increasing complexity.</span></h1>
+      <h1>Four projects.<br><span style="color: var(--accent)">Increasing complexity.</span></h1>
       <p class="hero-sub">
         Every module ends with something you build and keep. The projects form a
         deliberate arc: from a single HTML file in a browser to a deployed multi-user
         application — mirroring the progression through the Five Levels.
       </p>
       <div class="project-arc">
-        {projects.map((p, i) => (
+        {projects.map((p) => (
           <a href={`#${p.id}`} class="arc-item" style={`--arc-color: ${p.color}`}>
             <span class="arc-n mono">P{p.number}</span>
             <span class="arc-title">{p.title}</span>
             <span class="arc-level">Level {p.level}</span>
-            {i < projects.length - 1 && <span class="arc-arrow" aria-hidden="true">→</span>}
+            <span class="arc-arrow" aria-hidden="true">→</span>
           </a>
         ))}
       </div>
@@ -195,6 +180,8 @@ const projects = [
               </div>
               <div class="pd-col-tech">
                 <MediaFigure
+                  src={p.screenshot.src}
+                  alt={p.screenshot.alt}
                   caption={p.screenshot.caption}
                   subcaption={p.screenshot.subcaption}
                   placeholderLabel={p.screenshot.placeholderLabel}
@@ -212,7 +199,7 @@ const projects = [
   </section>
 
   <CTABanner
-    title="Build all five. Keep all five."
+    title="Build all four. Keep all four."
     sub="Each project is yours to extend, modify, and ship. They're designed to be real tools — not tutorial throwaways."
   />
 
@@ -225,16 +212,17 @@ const projects = [
   /* Arc overview */
   .project-arc {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     flex-wrap: wrap;
     gap: 4px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 4px;
-    width: fit-content;
+    width: 100%;
   }
   .arc-item {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 2px;

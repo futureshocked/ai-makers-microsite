@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CTABanner from '../components/CTABanner.astro';
 import MediaFigure from '../components/MediaFigure.astro';
+import VideoEmbed from '../components/VideoEmbed.astro';
 
 const modules = [
   {
@@ -62,7 +63,7 @@ const modules = [
     title: 'The AI-Assisted Workflow',
     runtime: '~2 hr',
     volatility: 'Stable',
-    summary: 'The complete workflow from idea to deployed application: brainstorming, specification, implementation, testing, iteration, documentation, and deployment. Two projects in this module.',
+    summary: 'The complete workflow from idea to deployed application: brainstorming, specification, implementation, testing, iteration, documentation, and deployment.',
     lectures: [
       { id: 'L3.1', title: 'Brainstorming and Idea Validation with AI', duration: '10 min' },
       { id: 'L3.2', title: 'Planning and Specification', duration: '12 min' },
@@ -74,9 +75,9 @@ const modules = [
       { id: 'L3.8', title: 'AI for the Non-Code Business Layer', duration: '10 min' },
     ],
     project: {
-      id: 'P2–P3',
-      title: 'CLI Tool + Serial Plotter GUI',
-      description: 'Two projects: a CLI tool that processes maker file formats (BOM, traces, CSV), and a live serial data plotter with a web chart frontend.',
+      id: 'P2',
+      title: 'Arduino Serial Plotter',
+      description: 'A live serial data plotter that reads multiple channels from an Arduino, streams them to a web chart, and logs everything to CSV.',
       tags: ['Python', 'Flask', 'Chart.js', 'Level 4'],
     },
   },
@@ -94,7 +95,7 @@ const modules = [
       { id: 'L4.5', title: 'Cost, Latency, and Graceful Failure', duration: '10 min' },
     ],
     project: {
-      id: 'P4',
+      id: 'P3',
       title: 'Datasheet Q&A Tool',
       description: 'Upload a component datasheet, ask natural-language questions, get cited answers. Your first AI-powered application using the RAG pattern.',
       tags: ['Python', 'RAG', 'PDF', 'LLM API', 'Level 4–5'],
@@ -117,8 +118,8 @@ const modules = [
       { id: 'L5.8', title: 'The Solopreneur Roadmap (bonus)', duration: '10 min' },
     ],
     project: {
-      id: 'P5',
-      title: 'Resource Booking System (Capstone)',
+      id: 'P4',
+      title: 'Makerspace Booking System (Capstone)',
       description: 'A full makerspace equipment booking app: multi-user auth, PostgreSQL, role-based access, conflict detection, public holiday integration, and APScheduler email reminders.',
       tags: ['Python', 'PostgreSQL', 'Flask', 'Auth', 'Level 5'],
     },
@@ -128,7 +129,7 @@ const modules = [
 
 <BaseLayout
   title="Curriculum"
-  description="Full module-by-module curriculum for AI Coding for Makers — 7 modules, 5 projects, from setup to a deployed multi-user application."
+  description="Full module-by-module curriculum for AI Coding for Makers — 7 modules, 4 projects, from setup to a deployed multi-user application."
 >
 
   <section class="section curriculum-hero bg-grid">
@@ -137,35 +138,40 @@ const modules = [
         <p class="section-label">Full Curriculum</p>
         <h1>What you'll learn</h1>
         <p class="hero-sub">
-          Seven modules. Five projects. A complete arc from first prompt to
+          Seven modules. Four projects. A complete arc from first prompt to
           deployed application — built on a workflow you'll reuse for every
           project after this one.
         </p>
         <div class="curriculum-stats">
           <div class="cs-item"><span class="mono">6</span> Modules + Capstone</div>
           <div class="cs-sep">·</div>
-          <div class="cs-item"><span class="mono">5</span> Hands-on Projects</div>
+          <div class="cs-item"><span class="mono">4</span> Hands-on Projects</div>
           <div class="cs-sep">·</div>
           <div class="cs-item"><span class="mono">~10 hr</span> of content</div>
         </div>
       </div>
       <div class="curriculum-hero-media">
-        <MediaFigure
-          caption="Module 0 intro — setting expectations before you write a single prompt"
+                <VideoEmbed
+          youtubeId="ZqSBdalBE2Y"
+          title="Module 0, L0.1 — Why I Built This Course"
+          caption="Module 0 Lecture 1 — Why I Built This Course"
           subcaption="Module 0, L0.1 · Why I Built This Course"
-          placeholderLabel="L0.1 — Why I Built This Course"
+          desc="Peter explains why he built this course as a maker — not as a software engineer. The lecture covers the gap between having an idea and shipping software, why AI coding assistants change that equation for hardware makers and solopreneurs, and what you will have built by the end of the course."
         />
+
+        
       </div>
     </div>
   </section>
 
   <section class="section-sm">
     <div class="container">
-      <MediaFigure
-        caption="A typical lecture slide — concise, hardware-grounded, with real code examples throughout"
+      <VideoEmbed
+        youtubeId="PkRF8o2R7fU"
+        title="Module 1, L1.3 — The Core Skill: Framing a Problem for an AI"
+        caption="Module 1 Lecture 3 — The Core Skill: Framing a Problem for an AI"
         subcaption="Module 1, L1.3 · The Core Skill: Framing a Problem for an AI"
-        placeholderLabel="L1.3 — Framing a Problem"
-        aspect="21 / 9"
+        desc="Framing is the core skill of AI-assisted coding. This lecture introduces the four-element structure — task, context, constraints, and output format — that turns a vague request into a specification the AI can act on. A well-framed prompt reduces correction cycles; a poorly framed one produces plausible-looking output built on wrong assumptions."
       />
     </div>
   </section>

@@ -7,26 +7,31 @@
  *   title       — accessible title for the iframe / placeholder heading
  *   caption     — main legend text shown below the video
  *   subcaption  — secondary monospace label (e.g. "Course intro · ~3 min")
+ *   desc        — optional paragraph describing what the video covers
  */
 interface Props {
   youtubeId?: string;
   title: string;
   caption: string;
   subcaption: string;
+  desc?: string;
 }
-const { youtubeId, title, caption, subcaption } = Astro.props;
+const { youtubeId, title, caption, subcaption, desc } = Astro.props;
 ---
 
 <figure class="media-figure video-figure">
   <div class="video-wrapper">
     {youtubeId ? (
-      <iframe
-        src={`https://www.youtube.com/embed/${youtubeId}?rel=0&modestbranding=1`}
-        title={title}
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        loading="lazy"
-      ></iframe>
+      <>
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${youtubeId}?rel=0&modestbranding=1&showinfo=0&iv_load_policy=3`}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+        <div class="yt-title-mask" aria-hidden="true"></div>
+      </>
     ) : (
       <div class="video-placeholder" role="img" aria-label={title}>
         <div class="vp-bg"></div>
@@ -54,6 +59,7 @@ const { youtubeId, title, caption, subcaption } = Astro.props;
     <div class="mc-text">
       <span class="mc-caption">{caption}</span>
       <span class="mc-sub mono">{subcaption}</span>
+      {desc && <p class="mc-desc">{desc}</p>}
     </div>
   </figcaption>
 </figure>
@@ -82,6 +88,14 @@ const { youtubeId, title, caption, subcaption } = Astro.props;
     height: 100%;
     border: none;
     display: block;
+  }
+  .yt-title-mask {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 52px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85) 40%, transparent);
+    pointer-events: none;
+    z-index: 1;
   }
 
   /* Placeholder */
@@ -158,5 +172,11 @@ const { youtubeId, title, caption, subcaption } = Astro.props;
     font-size: 0.68rem;
     color: var(--text-dim);
     letter-spacing: 0.04em;
+  }
+  .mc-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin-top: 6px;
   }
 </style>
