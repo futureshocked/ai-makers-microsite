@@ -1,0 +1,667 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CTABanner from '../components/CTABanner.astro';
+
+const aiModels = [
+  { name: 'Claude Haiku-class',  modelId: 'claude-haiku-4-5',  note: 'Fastest and cheapest. Good for high-volume, low-complexity tasks.',         href: 'https://www.anthropic.com/pricing' },
+  { name: 'Claude Sonnet-class', modelId: 'claude-sonnet-4-6', note: 'Course default: strong reasoning at a reasonable cost per token.',           href: 'https://www.anthropic.com/pricing' },
+  { name: 'Claude Opus-class',   modelId: 'claude-opus-4-8',   note: 'Highest capability. Use for complex agentic tasks.',                         href: 'https://www.anthropic.com/pricing' },
+  { name: 'Claude Fable 5',      modelId: 'claude-fable-5',    note: 'Creative and narrative-focused model.',                                      href: 'https://www.anthropic.com/pricing' },
+  { name: 'OpenAI GPT-4 class',  modelId: 'GPT-4o, GPT-4o-mini', note: 'Primary alternative to Claude for coding tasks.',                         href: 'https://openai.com' },
+  { name: 'Google Gemini',       modelId: 'Gemini 1.5 Pro / Flash', note: 'Strong long-context capability. Flash variant is fast and affordable.', href: 'https://ai.google.dev' },
+  { name: 'Meta Llama',          modelId: 'Llama 3.x series',  note: 'Most capable open-weight family. Run locally or via API.',                  href: 'https://ai.meta.com/llama/' },
+  { name: 'Qwen',                modelId: 'Qwen2.5-Coder',     note: 'Strong coding-focused open-weight model from Alibaba.',                      href: 'https://huggingface.co/Qwen' },
+  { name: 'DeepSeek',            modelId: 'DeepSeek-V3',       note: 'High-performing open-weight with strong price-to-performance ratio.',        href: 'https://www.deepseek.com' },
+  { name: 'MiMo',                modelId: 'MiMo-7B',           note: 'Compact reasoning-focused model for resource-constrained environments.',     href: null },
+  { name: 'OpenRouter',          modelId: '(aggregator)',       note: 'One API key for models from multiple providers. Used in Module 0 setup.',   href: 'https://openrouter.ai' },
+];
+
+const codingTools = [
+  {
+    name: 'VS Code',
+    version: 'current stable',
+    note: 'The default editor for this course. Free, cross-platform, and actively developed.',
+    href: 'https://code.visualstudio.com',
+    installCmd: null,
+  },
+  {
+    name: 'Cline',
+    version: 'current',
+    note: 'AI coding assistant extension for VS Code. The primary tool used in Module 2.',
+    href: 'https://marketplace.visualstudio.com/items?itemName=saoudrizwan.claude-dev',
+    installCmd: null,
+  },
+  {
+    name: 'Claude Code',
+    version: 'current',
+    note: "Anthropic's terminal-based AI coding agent. Covered in Module 2.",
+    href: 'https://docs.anthropic.com/en/docs/claude-code',
+    installCmd: 'npm install -g @anthropic-ai/claude-code',
+  },
+  {
+    name: 'GitHub Copilot',
+    version: 'current',
+    note: 'Subscription-based coding assistant from GitHub. Strong inline autocomplete.',
+    href: 'https://github.com/features/copilot',
+    installCmd: null,
+  },
+  {
+    name: 'Cursor',
+    version: 'current',
+    note: 'AI-native fork of VS Code with deep model integration built into the editor.',
+    href: 'https://cursor.com',
+    installCmd: null,
+  },
+  {
+    name: 'Windsurf',
+    version: 'current',
+    note: 'AI-first editor by Codeium. Alternative to Cursor with a different UX model.',
+    href: 'https://windsurf.com',
+    installCmd: null,
+  },
+];
+
+const localTools = [
+  {
+    name: 'Ollama',
+    version: 'current',
+    note: 'Run open-weight models locally with a simple CLI. Recommended for local inference.',
+    href: 'https://ollama.com',
+    installCmd: 'curl -fsSL https://ollama.com/install.sh | sh',
+  },
+  {
+    name: 'LM Studio',
+    version: 'current',
+    note: 'GUI-based alternative to Ollama. Good for exploring and downloading models.',
+    href: 'https://lmstudio.ai',
+    installCmd: null,
+  },
+];
+
+const vramRows = [
+  { vram: '8 GB minimum',      usable: 'Up to 7B parameters',   examples: 'Llama 3.2 3B, Qwen2.5-Coder 7B' },
+  { vram: '16 GB comfortable', usable: 'Up to 13B parameters',  examples: 'Llama 3.1 8B, DeepSeek-Coder 7B' },
+  { vram: '24 GB+',            usable: '30B+ parameters',       examples: 'Llama 3 70B (Q4), Qwen2.5-Coder 32B' },
+];
+
+const pythonLibs = [
+  { name: 'sentence-transformers',          importName: 'sentence_transformers', role: 'Embedding model wrapper. Course uses all-MiniLM-L6-v2 for RAG.',                                               href: 'https://pypi.org/project/sentence-transformers/' },
+  { name: 'chromadb',                       importName: 'chromadb',              role: 'Vector store for RAG in Module 4. Uses PersistentClient API.',                                                   href: 'https://pypi.org/project/chromadb/' },
+  { name: 'pymupdf',                        importName: 'fitz',                  role: 'PDF parsing. Import name (fitz) differs from package name (pymupdf). Also install pymupdf4llm for Markdown extraction.', href: 'https://pypi.org/project/pymupdf/' },
+  { name: 'anthropic',                      importName: 'anthropic',             role: 'Official Anthropic Python SDK. Covers streaming and tool use.',                                                   href: 'https://pypi.org/project/anthropic/' },
+  { name: 'flask',                          importName: 'flask',                 role: 'Lightweight web framework used in Module 3 and Module 5 projects.',                                              href: 'https://pypi.org/project/flask/' },
+  { name: 'pyserial',                       importName: 'serial',                role: 'Serial port communication for Arduino and hardware projects. Import name (serial) differs from package name.',   href: 'https://pypi.org/project/pyserial/' },
+  { name: 'smbus2',                         importName: 'smbus2',                role: 'I2C bus access on Linux and Raspberry Pi.',                                                                       href: 'https://pypi.org/project/smbus2/' },
+  { name: 'adafruit-circuitpython-busdevice', importName: 'adafruit_bus_device', role: 'Adafruit hardware abstraction for I2C and SPI peripherals.',                                                    href: 'https://pypi.org/project/adafruit-circuitpython-busdevice/' },
+];
+
+const runtimeTools = [
+  { name: 'Python',    version: '3.12+',             note: 'Python 3.8 is end-of-life — upgrade if you are still on it.',         warn: true  },
+  { name: 'Node.js',  version: '22.x LTS',           note: 'Required for Claude Code. Always install the LTS release.',            warn: false },
+  { name: 'Git',      version: '2.x stable',         note: 'Any recent 2.x release works for course projects.',                    warn: false },
+  { name: 'npm',      version: 'bundled with Node',  note: 'Comes with Node.js. Used to install Claude Code.',                     warn: false },
+  { name: 'pip',      version: 'bundled with Python', note: 'Use pip3 on systems that have both Python 2 and 3 installed.',        warn: false },
+];
+
+const cloudServices = [
+  { name: 'Hetzner VPS',  role: 'Recommended deployment host. Strong price-to-performance for solo projects.', href: 'https://www.hetzner.com' },
+  { name: 'Resend',       role: 'Transactional email API. Used in Module 5 for booking notification emails.',  href: 'https://resend.com' },
+  { name: 'UptimeRobot',  role: 'Free uptime monitoring. Get notified when your deployed app goes down.',      href: 'https://uptimerobot.com' },
+  { name: 'Sentry',       role: 'Error tracking and alerting. Free tier is sufficient for solo projects.',     href: 'https://sentry.io' },
+];
+
+const paymentServices = [
+  { name: 'Paddle Billing', type: 'Merchant of Record', note: 'Recommended. Handles VAT and GST compliance on your behalf internationally.', href: 'https://paddle.com',            recommended: true  },
+  { name: 'Lemon Squeezy',  type: 'Merchant of Record', note: 'Alternative MOR with a similar feature set to Paddle.',                       href: 'https://www.lemonsqueezy.com',  recommended: false },
+  { name: 'Stripe',         type: 'Payment Processor',  note: 'Not a merchant of record — you handle tax compliance yourself.',              href: 'https://stripe.com',            recommended: false },
+];
+---
+
+<BaseLayout
+  title="Resources"
+  description="Living reference for all time-sensitive content in the AI Coding for Makers course and book — model names, tool versions, library versions, pricing, and service providers."
+>
+
+  <!-- HERO -->
+  <section class="section bg-grid">
+    <div class="container">
+      <p class="section-label">// course + book companion</p>
+      <h1>Course Resources</h1>
+      <p class="res-hero-sub">
+        This page is the living reference for everything in the book and course that changes
+        frequently: model names, tool versions, library versions, API pricing, and service providers.
+        It is updated as things change so you always have current information.
+      </p>
+      <div class="book-status-notice">
+        <span class="book-status-icon">📖</span>
+        <span>The companion book is currently under development. Expected publication: <strong>late July 2026</strong>.</span>
+      </div>
+      <div class="update-notice">
+        <span class="mono">// last updated: June 2026</span>
+      </div>
+      <div class="shortlink-callout">
+        <span class="mono shortlink-url">txplo.re/ai_resources</span>
+        <span class="shortlink-arrow">→</span>
+        <span class="shortlink-label">this page</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01: AI MODELS -->
+  <section class="section-sm">
+    <div class="container">
+      <p class="section-label">01 // ai models &amp; providers</p>
+      <h2>AI Models and Providers</h2>
+      <p class="res-intro">
+        The course refers to models by capability tier (Haiku-class, Sonnet-class, Opus-class) rather
+        than specific version IDs to reduce re-recording. The model IDs below are current as of the
+        last-updated date above. Always verify with your provider before starting a project — new
+        versions are released every few months.
+      </p>
+      <div class="card">
+        <div class="res-table">
+          <div class="res-header">
+            <span>Model / Provider</span>
+            <span>Current ID</span>
+            <span class="col-note">Notes</span>
+            <span></span>
+          </div>
+          {aiModels.map(m => (
+            <div class="res-row">
+              <span class="res-name">{m.name}</span>
+              <code class="res-id">{m.modelId}</code>
+              <span class="res-note col-note">{m.note}</span>
+              <span class="res-link">
+                {m.href && <a href={m.href} target="_blank" rel="noopener" class="ext-link">↗</a>}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02: AI CODING TOOLS -->
+  <section class="section-sm">
+    <div class="container">
+      <p class="section-label">02 // ai coding tools</p>
+      <h2>AI Coding Tools</h2>
+      <p class="res-intro">
+        UIs, keyboard shortcuts, and model selectors change with every release. Check the linked
+        pages for the latest versions and installation instructions before recording or following along.
+      </p>
+      <div class="grid-2">
+        {codingTools.map(tool => (
+          <div class="card tool-card">
+            <div class="tool-top">
+              <h3 class="tool-name">{tool.name}</h3>
+              <span class="tag tag-accent">{tool.version}</span>
+            </div>
+            <p class="tool-note">{tool.note}</p>
+            {tool.installCmd && (
+              <div class="install-block">
+                <span class="install-label">install</span>
+                <code class="install-cmd">{tool.installCmd}</code>
+              </div>
+            )}
+            {tool.href && (
+              <a href={tool.href} target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+                Visit site ↗
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 03: LOCAL MODEL TOOLS -->
+  <section class="section-sm">
+    <div class="container">
+      <p class="section-label">03 // local model tools</p>
+      <h2>Local Model Tools</h2>
+      <p class="res-intro">
+        Running models locally requires GPU VRAM. The thresholds below shift as quantization improves —
+        treat them as practical starting points rather than hard limits.
+      </p>
+      <div class="grid-2" style="margin-bottom: 24px;">
+        {localTools.map(tool => (
+          <div class="card tool-card">
+            <div class="tool-top">
+              <h3 class="tool-name">{tool.name}</h3>
+              <span class="tag tag-stable">{tool.version}</span>
+            </div>
+            <p class="tool-note">{tool.note}</p>
+            {tool.installCmd && (
+              <div class="install-block">
+                <span class="install-label">install (Linux / macOS)</span>
+                <code class="install-cmd">{tool.installCmd}</code>
+              </div>
+            )}
+            {tool.href && (
+              <a href={tool.href} target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+                Visit site ↗
+              </a>
+            )}
+          </div>
+        ))}
+      </div>
+      <div class="card">
+        <h3 class="vram-heading">VRAM requirements (approximate)</h3>
+        <div class="table-scroll">
+          <table class="vram-table">
+            <thead>
+              <tr>
+                <th>GPU VRAM</th>
+                <th>Usable for</th>
+                <th>Example models</th>
+              </tr>
+            </thead>
+            <tbody>
+              {vramRows.map(row => (
+                <tr>
+                  <td class="vram-val">{row.vram}</td>
+                  <td>{row.usable}</td>
+                  <td class="vram-examples">{row.examples}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04: PYTHON LIBRARIES -->
+  <section class="section-sm">
+    <div class="container">
+      <p class="section-label">04 // python libraries</p>
+      <h2>Python Libraries</h2>
+      <p class="res-intro">
+        Libraries used in the course projects. Install name and import name sometimes differ —
+        this is a common source of confusing errors. Pin versions in a
+        <code>requirements.txt</code> for reproducibility.
+      </p>
+      <div class="card">
+        <div class="res-table lib-table">
+          <div class="res-header lib-header">
+            <span>pip install</span>
+            <span>import as</span>
+            <span class="col-note">Role in course</span>
+            <span></span>
+          </div>
+          {pythonLibs.map(lib => (
+            <div class="res-row">
+              <code class="res-pkg">{lib.name}</code>
+              <code class="res-pkg">{lib.importName}</code>
+              <span class="res-note col-note">{lib.role}</span>
+              <span class="res-link">
+                <a href={lib.href} target="_blank" rel="noopener" class="ext-link pypi-link">PyPI ↗</a>
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05: RUNTIME & DEV TOOLS -->
+  <section class="section-sm">
+    <div class="container">
+      <p class="section-label">05 // runtime &amp; dev tools</p>
+      <h2>Runtime &amp; Dev Tools</h2>
+      <p class="res-intro">
+        Core tools required before you start the course projects. Node.js LTS increments roughly annually.
+      </p>
+      <div class="grid-3">
+        {runtimeTools.map(rt => (
+          <div class="card rt-card">
+            <p class="rt-label">{rt.name}</p>
+            <span class={`rt-version mono ${rt.warn ? 'warn' : ''}`}>{rt.version}</span>
+            <p class="rt-note">{rt.note}</p>
+            {rt.warn && <span class="tag tag-volatile">3.8 is EOL</span>}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 06: API PRICING -->
+  <section class="section-sm">
+    <div class="container">
+      <p class="section-label">06 // api pricing</p>
+      <h2>API Pricing</h2>
+      <div class="warning-card">
+        <div class="warning-icon">⚠</div>
+        <div class="warning-body">
+          <p class="warning-title">Prices change frequently</p>
+          <p class="warning-text">
+            We deliberately do not list specific token prices here to avoid giving you outdated figures.
+            Always check the provider's pricing page before starting a new project or estimating costs.
+          </p>
+          <div class="pricing-links">
+            <a href="https://www.anthropic.com/pricing" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+              Anthropic Pricing ↗
+            </a>
+            <a href="https://openrouter.ai/models" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+              OpenRouter Models &amp; Pricing ↗
+            </a>
+            <a href="https://openai.com/api/pricing" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+              OpenAI Pricing ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07: CLOUD SERVICES -->
+  <section class="section-sm">
+    <div class="container">
+      <p class="section-label">07 // cloud services</p>
+      <h2>Cloud Services</h2>
+      <p class="res-intro">
+        Services used in the deployment and operations sections of the course.
+        All have free or low-cost tiers suitable for solo projects.
+      </p>
+      <div class="grid-2">
+        {cloudServices.map(svc => (
+          <div class="card svc-card">
+            <h3 class="svc-name">{svc.name}</h3>
+            <p class="svc-role">{svc.role}</p>
+            <a href={svc.href} target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+              Visit site ↗
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 08: PAYMENT SERVICES -->
+  <section class="section-sm">
+    <div class="container">
+      <p class="section-label">08 // payment &amp; business services</p>
+      <h2>Payment &amp; Business Services</h2>
+      <p class="res-intro">
+        A <strong>merchant of record (MOR)</strong> collects payments on your behalf and handles tax
+        compliance (VAT, GST) in every jurisdiction they operate. This is the recommended approach
+        for solopreneurs selling internationally — the MOR deals with tax registration, not you.
+        These services are covered in Module 5.
+      </p>
+      <div class="grid-3">
+        {paymentServices.map(svc => (
+          <div class={`card svc-card ${svc.recommended ? 'card-accent' : ''}`}>
+            <div class="svc-top">
+              <h3 class="svc-name">{svc.name}</h3>
+              {svc.recommended && <span class="tag tag-accent">recommended</span>}
+            </div>
+            <span class="tag tag-violet svc-type-tag">{svc.type}</span>
+            <p class="svc-role">{svc.note}</p>
+            <a href={svc.href} target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+              Visit site ↗
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CTABanner
+    title="Ready to build?"
+    sub="Everything on this page supports the course projects. Start with Module 0 to get your environment set up."
+  />
+
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .res-hero-sub {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 680px;
+    margin: 20px 0 28px;
+    line-height: 1.7;
+  }
+  .book-status-notice {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--accent-2-dim);
+    border: 1px solid rgba(124, 58, 237, 0.35);
+    border-radius: var(--radius-md);
+    padding: 10px 16px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    max-width: 520px;
+  }
+  .book-status-notice strong { color: #a78bfa; }
+  .book-status-icon { flex-shrink: 0; }
+  .update-notice {
+    display: inline-flex;
+    align-items: center;
+    background: var(--accent-dim);
+    border: 1px solid var(--border-accent);
+    border-radius: var(--radius-md);
+    padding: 8px 16px;
+    margin-bottom: 14px;
+    color: var(--accent);
+    font-size: 0.875rem;
+  }
+  .shortlink-callout {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 8px 16px;
+  }
+  .shortlink-url { color: var(--accent); }
+  .shortlink-arrow { color: var(--text-dim); }
+
+  /* Section intro */
+  .res-intro {
+    font-size: 0.925rem;
+    color: var(--text-muted);
+    max-width: 760px;
+    margin-bottom: 24px;
+    line-height: 1.7;
+  }
+  .res-intro strong { color: var(--text); }
+
+  /* Resource table (AI models + Python libs) */
+  .res-table { display: flex; flex-direction: column; }
+  .res-header {
+    display: grid;
+    grid-template-columns: 1.8fr 1.5fr 2.5fr 32px;
+    gap: 16px;
+    padding: 10px 12px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    border-bottom: 1px solid var(--border);
+  }
+  .res-row {
+    display: grid;
+    grid-template-columns: 1.8fr 1.5fr 2.5fr 32px;
+    gap: 16px;
+    padding: 13px 12px;
+    border-bottom: 1px solid var(--border);
+    align-items: start;
+    transition: background 0.1s;
+  }
+  .res-row:last-child { border-bottom: none; }
+  .res-row:hover { background: var(--surface-2); border-radius: var(--radius-sm); }
+  .res-name { font-weight: 600; color: var(--text); font-size: 0.9rem; }
+  .res-id {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: var(--surface-2);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    align-self: start;
+    word-break: break-all;
+  }
+  .res-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; }
+  .res-link { display: flex; align-items: flex-start; }
+  .ext-link {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .ext-link:hover { color: var(--accent); }
+
+  /* Library table variant */
+  .lib-table .res-header,
+  .lib-table .res-row { grid-template-columns: 1.6fr 1.4fr 2.4fr 52px; }
+  .res-pkg {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    background: var(--surface-2);
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    word-break: break-all;
+    align-self: start;
+  }
+  .pypi-link { font-size: 0.75rem; color: var(--accent); white-space: nowrap; }
+  .pypi-link:hover { color: var(--text); }
+
+  /* Tool cards */
+  .tool-card { display: flex; flex-direction: column; gap: 12px; }
+  .tool-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .tool-name { font-size: 1rem; font-weight: 700; color: var(--text); }
+  .tool-note { font-size: 0.875rem; color: var(--text-muted); flex: 1; line-height: 1.55; }
+  .install-block {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .install-label {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .install-cmd {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent);
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    word-break: break-all;
+    white-space: pre-wrap;
+  }
+  .btn-sm { padding: 7px 14px; font-size: 0.82rem; align-self: flex-start; }
+
+  /* VRAM table */
+  .vram-heading { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 16px; }
+  .table-scroll { overflow-x: auto; }
+  .vram-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+  .vram-table thead tr { border-bottom: 1px solid var(--border-accent); }
+  .vram-table th {
+    text-align: left;
+    padding: 9px 12px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+  }
+  .vram-table td { padding: 12px 12px; border-bottom: 1px solid var(--border); color: var(--text-muted); }
+  .vram-table tbody tr:last-child td { border-bottom: none; }
+  .vram-table tbody tr:hover td { background: var(--surface-2); }
+  .vram-val { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent); white-space: nowrap; }
+  .vram-examples { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-muted); }
+
+  /* Runtime cards */
+  .rt-card { display: flex; flex-direction: column; gap: 8px; }
+  .rt-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+  .rt-version {
+    font-family: var(--font-mono);
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--accent);
+    background: none;
+    padding: 0;
+    border-radius: 0;
+    line-height: 1.2;
+  }
+  .rt-version.warn { color: var(--warning); }
+  .rt-note { font-size: 0.82rem; color: var(--text-muted); flex: 1; line-height: 1.5; }
+
+  /* Pricing warning card */
+  .warning-card {
+    background: rgba(245, 158, 11, 0.05);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .warning-icon { font-size: 1.4rem; flex-shrink: 0; color: var(--warning); margin-top: 2px; }
+  .warning-body { flex: 1; }
+  .warning-title { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .warning-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; }
+  .pricing-links { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  /* Service cards */
+  .svc-card { display: flex; flex-direction: column; gap: 10px; }
+  .svc-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .svc-name { font-size: 1rem; font-weight: 700; color: var(--text); }
+  .svc-role { font-size: 0.875rem; color: var(--text-muted); flex: 1; line-height: 1.55; }
+  .svc-type-tag { align-self: flex-start; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .col-note { display: none; }
+    .res-header { grid-template-columns: 1fr 1fr 32px; }
+    .res-row { grid-template-columns: 1fr 1fr 32px; }
+    .lib-table .res-header,
+    .lib-table .res-row { grid-template-columns: 1fr 1fr 52px; }
+  }
+  @media (max-width: 640px) {
+    .res-header { grid-template-columns: 1fr 32px; }
+    .res-row { grid-template-columns: 1fr 32px; }
+    .res-id, .res-pkg { display: none; }
+    .lib-table .res-header,
+    .lib-table .res-row { grid-template-columns: 1fr 52px; }
+    .warning-card { flex-direction: column; gap: 12px; }
+  }
+</style>
